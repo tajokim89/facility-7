@@ -1,0 +1,50 @@
+/* 감정 처리 시설 7구역 — 다크 테마 */
+
+:root {
+  --bg-color: #0a0a0a;
+  --bg-secondary: #111111;
+  --text-primary: #d4d4d4;
+  --text-dim: #666666;
+  --text-speaker: #88aacc;
+  --text-narration: #999999;
+  --accent: #334455;
+  --accent-hover: #445566;
+  --danger: #663333;
+  --emotion-full: #ccaa44;
+  --emotion-mid: #aa6633;
+  --emotion-low: #883333;
+  --emotion-empty: #440000;
+  --border: #222222;
+  --choice-bg: #0f1318;
+  --choice-hover: #1a2030;
+  --choice-border: #2a3040;
+  --overlay: rgba(0, 0, 0, 0.85);
+
+  /* 감정 액체 색상 */
+  --liquid-ennui: #888888;
+  --liquid-grudge: #993333;
+  --liquid-relief: #cccc66;
+  --liquid-void: #000000;
+
+  font-family: 'Noto Sans KR', 'Pretendard', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

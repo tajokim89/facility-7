@@ -1,0 +1,122 @@
+/* 공포 이펙트 5종 — prefers-reduced-motion 존중 */
+
+/* 1. 화면 흔들림 */
+@keyframes shake {
+  0%, 100% { transform: translate(0); }
+  10% { transform: translate(-4px, 2px); }
+  20% { transform: translate(3px, -3px); }
+  30% { transform: translate(-2px, 4px); }
+  40% { transform: translate(4px, -1px); }
+  50% { transform: translate(-3px, 3px); }
+  60% { transform: translate(2px, -4px); }
+  70% { transform: translate(-4px, 1px); }
+  80% { transform: translate(3px, 3px); }
+  90% { transform: translate(-1px, -2px); }
+}
+
+.effect-shake {
+  animation: shake 0.6s ease-in-out;
+}
+
+/* 2. 텍스트 글리치 */
+@keyframes glitch {
+  0%, 100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  10% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-3px, 0);
+  }
+  20% {
+    clip-path: inset(50% 0 20% 0);
+    transform: translate(3px, 0);
+  }
+  30% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-2px, 0);
+  }
+  40% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(2px, 0);
+  }
+  50% {
+    clip-path: inset(30% 0 40% 0);
+    transform: translate(-1px, 0);
+  }
+}
+
+.effect-glitch {
+  animation: glitch 0.8s steps(1) forwards;
+  text-shadow: 2px 0 #ff0000, -2px 0 #00ffff;
+}
+
+/* 3. 배경색 점진적 변화 */
+@keyframes colorShift {
+  0% { background-color: var(--bg-color, #0a0a0a); }
+  30% { background-color: #1a0505; }
+  60% { background-color: #200808; }
+  100% { background-color: var(--bg-color, #0a0a0a); }
+}
+
+.effect-colorShift {
+  animation: colorShift 3s ease-in-out;
+}
+
+/* 4. 페이드 인/아웃 */
+@keyframes fadeToBlack {
+  0% { opacity: 1; }
+  40% { opacity: 0; }
+  60% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.effect-fade {
+  animation: fadeToBlack 2s ease-in-out;
+}
+
+/* 5. 텍스트 왜곡 */
+@keyframes distortion {
+  0%, 100% {
+    filter: none;
+    transform: scaleX(1);
+  }
+  15% {
+    filter: blur(1px);
+    transform: scaleX(1.02);
+  }
+  30% {
+    filter: blur(0);
+    transform: scaleX(0.98) skewX(1deg);
+  }
+  45% {
+    filter: blur(2px);
+    transform: scaleX(1.01) skewX(-0.5deg);
+  }
+  60% {
+    filter: blur(0);
+    transform: scaleX(1);
+  }
+  75% {
+    filter: blur(1px);
+    transform: skewX(0.5deg);
+  }
+}
+
+.effect-distortion {
+  animation: distortion 1.5s ease-in-out;
+}
+
+/* 접근성: 모션 감소 설정 시 모든 이펙트 비활성화 */
+@media (prefers-reduced-motion: reduce) {
+  .effect-shake,
+  .effect-glitch,
+  .effect-colorShift,
+  .effect-fade,
+  .effect-distortion {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+    text-shadow: none !important;
+  }
+}

@@ -1,0 +1,56 @@
+.dialogue-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, transparent, rgba(5, 5, 10, 0.95) 15%);
+  padding: 2rem 3rem 1.5rem;
+  min-height: 200px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dialogue-speaker {
+  color: var(--text-speaker);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.dialogue-text {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  min-height: 3.6em;
+}
+
+.dialogue-text.narration {
+  color: var(--text-narration);
+  font-style: italic;
+}
+
+.typing-cursor {
+  color: var(--text-dim);
+  animation: blink 0.8s step-end infinite;
+  margin-left: 1px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.dialogue-indicator {
+  text-align: right;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  margin-top: 0.5rem;
+  animation: bounce 1.2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}

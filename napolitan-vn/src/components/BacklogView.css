@@ -1,0 +1,93 @@
+.backlog-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backlog-container {
+  width: min(700px, 90vw);
+  height: 80vh;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.backlog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-family: monospace;
+  letter-spacing: 0.15em;
+}
+
+.backlog-close {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.7rem;
+  font-family: monospace;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.backlog-close:hover {
+  border-color: var(--text-speaker);
+  color: var(--text-primary);
+}
+
+.backlog-entries {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+}
+
+.backlog-entry {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.backlog-entry:last-of-type {
+  border-bottom: none;
+}
+
+.backlog-speaker {
+  color: var(--text-speaker);
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.backlog-text {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.backlog-text.narration {
+  color: var(--text-narration);
+  font-style: italic;
+}
+
+.backlog-entries::-webkit-scrollbar {
+  width: 4px;
+}
+
+.backlog-entries::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.backlog-entries::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
