@@ -1,0 +1,14 @@
+# ComfyUI Prompt Guide for "Remaining Emotions"
+
+## Global Negative Prompt
+(low quality, worst quality:1.4), (bad anatomy), (deformed), (text, watermark, logo), (bright colors, cheerful), (cartoon, 2d, anime:1.2), blurry, messy, distorted.
+
+## Scenes
+1. S01_Elevator: POV, holding a futuristic glowing tablet, digital screen showing "Observer Registered: Sector 7", dark industrial elevator interior, flickering fluorescent lights, shadows, B9 level indicator, cold steel texture, cinematic lighting.
+2. S02_SectorA: Symmetric wide shot, sterile white laboratory, Sector A, minimalist white walls and floor, a single high-tech chair in the center, transparent tubes connected to the chair, soft ambient white lighting, clinical atmosphere.
+3. S03_Boredom: Close-up on transparent glass tubes, viscous gray liquid flowing through pipes, bubbles, laboratory equipment in background, blurred, high-tech sensors, muted colors, gloomy atmosphere.
+4. S04_Emergency: Same lab as Sector A, red emergency lights, glowing crimson liquid boiling in the tubes, digital screen showing "WARNING: HOSTILITY", high contrast, dramatic shadows, chaotic atmosphere.
+5. S05_Breakroom: Empty breakroom in underground facility, a single vending machine glowing with cold blue light, gray plastic tables, metal chairs, flickering light, eerie silence, industrial pipes on the ceiling.
+6. S06_SectorB: Advanced laboratory, Sector B, shimmering silver liquid flowing in elegant glass containers, ethereal glow, micro-particles, beautiful and melancholic lighting, clean and futuristic.
+7. S07_SectorG: Forbidden hallway, Sector G, corridor filled with mirrors on all sides, infinite reflections, distorted perspective, dim greenish lighting, mysterious and unsettling, a dark figure in the distance.
+8. S08_Ending: Close-up of a person's face reflected in a cracked mirror, expressionless eyes, hollow look, digital glitch overlay on the mirror reading "SUBJECT #042", futuristic uniform, cinematic lighting, tragic mood.

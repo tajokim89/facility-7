@@ -1,0 +1,127 @@
+[
+  {
+    "id": "S01",
+    "seed": 1001,
+    "prompt": "Masterpiece, 8k, clinical horror, POV, a sleek futuristic black tablet booting up in a dimly lit sterile room, glowing blue screen displaying 'Observer Registered: Sector 7', sharp focus on the digital interface, uncanny atmosphere, minimalist aesthetic, photorealistic."
+  },
+  {
+    "id": "S02",
+    "seed": 1002,
+    "prompt": "Masterpiece, 8k, clinical horror, POV inside a descending futuristic elevator, metallic walls reflecting flickering cold fluorescent lights, digital floor indicator showing 'B9', the lighting getting darker and greyish, industrial minimalism, claustrophobic and ominous mood."
+  },
+  {
+    "id": "S03",
+    "seed": 1003,
+    "prompt": "Masterpiece, 8k, clinical horror, Han Se-jin standing in a blindingly white sterile lobby, wearing a crisp pristine white clinical uniform, uncomfortably neutral expression, dead empty eyes, symmetrical composition, polished marble floor with sharp reflections, cold atmospheric lighting."
+  },
+  {
+    "id": "S04",
+    "seed": 1004,
+    "prompt": "Masterpiece, 8k, clinical horror, infinite white corridor, symmetrical architecture, high-tech signs for 'SECTOR A', 'SECTOR B', 'SECTOR C' glowing on the walls, Han Se-jin walking ahead in her white uniform, vanishing point perspective, eerie silence, too clean to be human."
+  },
+  {
+    "id": "S05",
+    "seed": 1005,
+    "prompt": "Masterpiece, 8k, clinical horror, extreme close-up of Han Se-jin's face, pale skin, unnervingly still and emotionless, soft shadows, blueish clinical light, sharp focus on her dead eyes, uncanny valley aesthetic."
+  },
+  {
+    "id": "S06",
+    "seed": 1006,
+    "prompt": "Masterpiece, 8k, clinical horror, a row of sterile white lockers in a locker room, some lockers have nameplates torn off leaving dark rectangular stains, a small label on one locker reading 'Observer #041 — Processed', eerie lighting, cold and empty space."
+  },
+  {
+    "id": "S07",
+    "seed": 1007,
+    "prompt": "Masterpiece, 8k, clinical horror, Sector A, a vast empty white room, a single high-tech extraction chair in the center, transparent 'Canal' tubes connected to the chair, bright over-exposed overhead lights, clean room aesthetic, terrifyingly pristine."
+  },
+  {
+    "id": "S08",
+    "seed": 1008,
+    "prompt": "Masterpiece, 8k, clinical horror, hand holding a tablet showing status monitors and checklists of a subject, blurred laboratory background with clinical equipment, cold blue light reflecting on the screen, diagnostic interface."
+  },
+  {
+    "id": "S09",
+    "seed": 1009,
+    "prompt": "Masterpiece, 8k, clinical horror, a middle-aged man (Subject #117) with a hollow expressionless face sitting in the extraction chair, transparent tubes connected to his neck and arms, sterile white background, high contrast, cinematic lighting."
+  },
+  {
+    "id": "S10",
+    "seed": 1010,
+    "prompt": "Masterpiece, 8k, clinical horror, macro shot of transparent glass tubes, a viscous faint gray liquid 'Boredom' flowing slowly inside, tiny bubbles, clinical detail, cold and disgusting texture, macro photography."
+  },
+  {
+    "id": "S12",
+    "seed": 1012,
+    "prompt": "Masterpiece, 8k, clinical horror, Subject #117 walking out of the room, mechanical and hollow gait, back view, long shadows on a perfectly white floor, the man looks like an empty shell, wide shot."
+  },
+  {
+    "id": "S14",
+    "seed": 1014,
+    "prompt": "Masterpiece, 8k, clinical horror, a young woman (Subject #203) sitting in the chair, eyes wide with pure terror and despair, gripping the armrests, sterile white environment contrasting with her emotional agony."
+  },
+  {
+    "id": "S15",
+    "seed": 1015,
+    "prompt": "Masterpiece, 8k, clinical horror, close-up of the tubes, the liquid turning into a boiling bubbling dark red 'Hatred', red emergency lights reflecting on the glass and white walls, intense and scary, visceral emotion."
+  },
+  {
+    "id": "S17",
+    "seed": 1017,
+    "prompt": "Masterpiece, 8k, clinical horror, liminal space, empty breakroom, a single vending machine with cold blue light, white plastic tables, several observers sitting far apart, all with the exact same expressionless face, uncanny repetition."
+  },
+  {
+    "id": "S18",
+    "seed": 1018,
+    "prompt": "Masterpiece, 8k, clinical horror, a man 'Lee Jun-hyuk' sitting across a table, his eyes are bloodshot but he has an uncomfortably wide smile, clinical breakroom background, unsettling and creepy."
+  },
+  {
+    "id": "S19",
+    "seed": 1019,
+    "prompt": "Masterpiece, 8k, clinical horror, close-up of a paper cup on a white table being filled with a viscous gray liquid from a vending machine, the liquid looks like the Boredom extract, eerie and unsettling."
+  },
+  {
+    "id": "S22",
+    "seed": 1022,
+    "prompt": "Masterpiece, 8k, clinical horror, Sector B, beautiful shimmering silver liquid 'Longing' flowing through crystalline pipes, ethereal glow, micro-particles, melancholic beauty within a sterile cage, cinematic lighting."
+  },
+  {
+    "id": "S24b",
+    "seed": 1024,
+    "prompt": "Masterpiece, 8k, clinical horror, Sector G Mirror Room, infinite reflections of a white room, distorted green light, a figure in a clinical uniform sitting in the distance, glitch effects, psychological horror, mind-bending composition."
+  },
+  {
+    "id": "S25",
+    "seed": 1025,
+    "prompt": "Masterpiece, 8k, clinical horror, an old man (Subject #089) sitting in the chair, a soft pale yellow liquid 'Relief' flowing through the tubes, he looks uncomfortably peaceful like a wax doll, sterile laboratory."
+  },
+  {
+    "id": "S26a",
+    "seed": 1026,
+    "prompt": "Masterpiece, 8k, clinical horror, tablet screen with glitching red text, 'Access Denied', 'Observer Degradation Detected', reflections of a face on the screen, dark background, technical failure aesthetic."
+  },
+  {
+    "id": "S28",
+    "seed": 1028,
+    "prompt": "Masterpiece, 8k, clinical horror, inside the elevator going up, the reflection of the observer in the metallic door, the reflection's eyes are glowing faintly or missing, dark and moody, transition to the outside world."
+  },
+  {
+    "id": "ending_normal",
+    "seed": 2001,
+    "prompt": "Masterpiece, 8k, clinical horror, a minimalist modern apartment at night, a person sitting alone on a sofa staring at a TV showing static, total silence, cold and lonely atmosphere."
+  },
+  {
+    "id": "ending_uneasy",
+    "seed": 2002,
+    "prompt": "Masterpiece, 8k, clinical horror, looking into a dark bathroom mirror, the observer's face is losing all color and emotion, gray tint to the skin, haunting and subtle horror, high contrast."
+  },
+  {
+    "id": "ending_mirror",
+    "seed": 2003,
+    "prompt": "Masterpiece, 8k, clinical horror, close-up of a cracked mirror, reflection of a face with 'Subject #042' text burned into the forehead in a digital font, glitch effects, terrifying realization."
+  },
+  {
+    "id": "ending_empty",
+    "seed": 2004,
+    "prompt": "Masterpiece, 8k, clinical horror, POV sitting in the extraction chair in a pure white void, Han Se-jin standing over with a needle, the world fading to blinding white, total emptiness and loss of self."
+  }
+]
