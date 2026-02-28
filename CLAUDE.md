@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-cd napolitan-vn
+cd game
 
 npm run dev      # 개발 서버 (localhost:5173~)
 npm run build    # 프로덕션 빌드 (tsc + vite)
@@ -23,7 +23,7 @@ npx tsc --noEmit # 타입 체크만
 ## 아키텍처
 
 ```
-napolitan-vn/src/
+game/src/
 ├── engine/
 │   ├── GameEngine.ts     # 게임 상태 머신 (핵심)
 │   ├── SaveManager.ts    # localStorage (글로벌/세이브 분리)
