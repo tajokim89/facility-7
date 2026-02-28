@@ -30,6 +30,7 @@ const chapter1: ChapterData = {
       speaker: '한서진',
       text: '어서 오세요. 오늘부터 7구역에서 근무하시는 분이죠?\n\n저는 한서진, 선임 관찰자예요. 편하게 해요.',
       next: 'S04',
+      ambient: 'facility',
     },
     {
       id: 'S04',
@@ -66,6 +67,8 @@ const chapter1: ChapterData = {
       id: 'S07',
       text: 'A구역. 하얀 벽, 하얀 바닥. 무균실처럼 정돈된 공간.\n\n중앙에 투명한 관(Canal)이 연결된 의자가 하나 놓여 있다.',
       next: 'S08',
+      sound: 'doorOpen',
+      ambient: 'sector_a',
     },
     {
       id: 'S08',
@@ -194,6 +197,7 @@ const chapter1: ChapterData = {
       id: 'S17',
       text: '휴게실. 자판기 하나와 간이 테이블.\n\n다른 관찰자 서너 명이 조용히 앉아 있다. 아무도 대화하지 않는다.',
       next: 'S18',
+      ambient: 'corridor',
       overrides: [{
         minPlaythrough: 2,
         appendText: '\n\n...전원이 같은 표정을 하고 있었다. 무표정. 정확히 같은 무표정.',
@@ -266,6 +270,8 @@ const chapter1: ChapterData = {
       speaker: '한서진',
       text: '오후엔 B구역 견학이에요. 정밀 추출실.\n\n기초 추출이랑은 좀 달라요. 더 섬세하고... 더 아름다워요.',
       next: 'S22',
+      sound: 'doorOpen',
+      ambient: 'sector_b',
     },
     {
       id: 'S22',
@@ -280,6 +286,7 @@ const chapter1: ChapterData = {
       id: 'S23',
       text: 'B구역에서 돌아오는 복도.\n\n벽에 붙은 표지판. A구역, B구역, C구역... 그리고 F구역, G구역 방향 화살표.',
       next: 'S24',
+      ambient: 'corridor',
       overrides: [{
         minPlaythrough: 2,
         appendText: '\n\nF구역 방향에서 희미한 비명 같은 소리가 들렸다. 아닌가... 환청일 수도.',
@@ -306,6 +313,8 @@ const chapter1: ChapterData = {
       text: '발걸음을 멈추고 통로 안쪽을 살짝 들여다봤다.\n\n거울. 사방이 거울이었다. 거울의 방.\n안쪽에 누군가 앉아 있는 것 같았지만... 확실하지 않다.',
       next: 'S25',
       effect: 'shake',
+      sound: 'doorOpen',
+      ambient: 'g_sector',
       overrides: [{
         minPlaythrough: 2,
         text: '발걸음을 멈추고 통로 안쪽을 살짝 들여다봤다.\n\n거울. 사방이 거울이었다. 거울의 방.\n\n안쪽에 앉아 있는 사람이 보였다.\n관찰자 유니폼을 입고 있었다.',

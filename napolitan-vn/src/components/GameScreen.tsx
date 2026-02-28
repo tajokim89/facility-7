@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { GameEngine } from '../engine/GameEngine';
+import { audioManager } from '../engine/AudioManager';
 import type { SceneNode } from '../data/schema';
 import chapter1 from '../data/chapter1';
 import DialogueBox from './DialogueBox';
@@ -30,29 +31,36 @@ export default function GameScreen() {
 
     // 빈 텍스트 노드(분기 체크용)는 자동 처리
     const resolvedText = engine.resolveText(node);
-    if (!resolvedText && node.choices && node.choices.length > 0) {
-      // 조건에 맞는 첫 번째 선택지로 자동 이동
+    if (!resolvedText) {
       const available = engine.getAvailableChoices();
       if (available.length > 0) {
+        // 조건 맞는 첫 번째 선택지로 자동 이동
         const next = engine.selectChoice(0);
-        if (next) {
-          updateState(next);
-          return;
-        }
+        if (next) { updateState(next); return; }
+      } else if (node.next) {
+        // 선택지가 모두 필터링됐거나 없으면 next로 자동 진행
+        const next = engine.advance();
+        if (next) { updateState(next); return; }
       }
     }
 
-    // 선택지 표시 여부
+    // 효과음 재생
+    if (node.sound === 'doorOpen') audioManager.playDoorOpen();
+
+    // 배경 앰비언트 전환
+    if (node.ambient) audioManager.playAmbient(node.ambient);
+
     const choices = engine.getAvailableChoices();
     setShowChoices(choices.length > 0);
 
-    // 엔딩 체크
     if (node.endingId) {
       engine.reachEnding(node.endingId);
     }
   }, [engine]);
 
   const handleNewGame = useCallback(() => {
+    audioManager.resume();
+    audioManager.playAmbient('facility');
     engine.loadChapter(chapter1);
     const node = engine.startNewGame();
     setScreen('game');
@@ -60,6 +68,8 @@ export default function GameScreen() {
   }, [engine, updateState]);
 
   const handleContinue = useCallback(() => {
+    audioManager.resume();
+    audioManager.playAmbient('facility');
     engine.loadChapter(chapter1);
     const save = engine.load();
     if (save) {
@@ -72,16 +82,16 @@ export default function GameScreen() {
   const handleAdvance = useCallback(() => {
     if (!currentNode) return;
 
-    // 엔딩 도달 시
     if (currentNode.endingId) {
+      audioManager.stopAmbient();
       setEndingText(engine.resolveText(currentNode));
       setScreen('ending');
       return;
     }
 
-    // 선택지가 있으면 무시 (ChoicePanel에서 처리)
     if (showChoices) return;
 
+    audioManager.playClick();
     const next = engine.advance();
     if (next) {
       engine.save();
@@ -90,6 +100,7 @@ export default function GameScreen() {
   }, [engine, currentNode, showChoices, updateState]);
 
   const handleChoice = useCallback((index: number) => {
+    audioManager.playChoiceSelect();
     const next = engine.selectChoice(index);
     if (next) {
       setShowChoices(false);
@@ -99,21 +110,32 @@ export default function GameScreen() {
   }, [engine, updateState]);
 
   const handleReturnToTitle = useCallback(() => {
+    audioManager.stopAmbient();
     setScreen('title');
     setCurrentNode(null);
     setShowChoices(false);
   }, []);
 
-  // 백로그 토글 (L키)
+  // 키보드 단축키
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      if (screen !== 'game') return;
+
+      // 백로그 토글 (L키)
       if (e.key === 'l' || e.key === 'L') {
-        if (screen === 'game') setShowBacklog(v => !v);
+        setShowBacklog(v => !v);
+        return;
+      }
+
+      // 숫자키로 선택지 선택 (1~4)
+      const num = parseInt(e.key);
+      if (!isNaN(num) && num >= 1 && num <= 4 && showChoices) {
+        handleChoice(num - 1);
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [screen]);
+  }, [screen, showChoices, handleChoice]);
 
   // --- 렌더링 ---
 

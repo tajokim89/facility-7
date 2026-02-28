@@ -12,30 +12,32 @@ export default function TitleScreen({ playthroughCount, hasSave, onNewGame, onCo
 
   return (
     <div className="title-screen">
-      <div className="title-content">
-        <h1 className="title-main">
-          {isReplay ? (
-            <>Remaining<br /><span className="title-accent">Emotions</span></>
-          ) : (
-            <>감정 처리 시설<br /><span className="title-accent">7구역</span></>
-          )}
-        </h1>
-        <p className="title-sub">
-          {isReplay
-            ? '관찰자 감정 로그 — 재관찰을 권장합니다.'
-            : 'Emotion Processing Institute — Sector 7'}
-        </p>
-      </div>
+      <div className="title-inner">
+        <div className="title-content">
+          <h1 className="title-main">
+            {isReplay ? (
+              <>Remaining<br /><span className="title-accent">Emotions</span></>
+            ) : (
+              <>감정 처리 시설<br /><span className="title-accent">7구역</span></>
+            )}
+          </h1>
+          <p className="title-sub">
+            {isReplay
+              ? '관찰자 감정 로그 — 재관찰을 권장합니다.'
+              : 'Emotion Processing Institute — Sector 7'}
+          </p>
+        </div>
 
-      <div className="title-menu">
-        <button className="title-button" onClick={onNewGame}>
-          {isReplay ? 'Re:Observe' : 'New Game'}
-        </button>
-        {hasSave && (
-          <button className="title-button" onClick={onContinue}>
-            Continue
+        <div className="title-menu">
+          <button className="title-button" onClick={onNewGame}>
+            {isReplay ? 'Re:Observe' : 'New Game'}
           </button>
-        )}
+          {hasSave && (
+            <button className="title-button" onClick={onContinue}>
+              Continue
+            </button>
+          )}
+        </div>
       </div>
 
       {playthroughCount > 0 && (

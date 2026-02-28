@@ -71,6 +71,10 @@ export interface SceneNode {
   endingId?: string;
   /** 배경 CSS 클래스 */
   bgClass?: string;
+  /** 이 노드 진입 시 재생할 효과음 */
+  sound?: 'doorOpen' | 'click' | 'choiceSelect';
+  /** 이 노드 진입 시 전환할 배경 앰비언트 트랙 */
+  ambient?: 'facility' | 'sector_a' | 'sector_b' | 'corridor' | 'g_sector';
 }
 
 /** 챕터 데이터 */
