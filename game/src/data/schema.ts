@@ -1,7 +1,16 @@
 // 시나리오 데이터 스키마 — 나폴리탄 VN 엔진
 
-/** CSS 공포 이펙트 종류 */
-export type EffectType = 'shake' | 'glitch' | 'colorShift' | 'fade' | 'distortion';
+/** CSS 공포 이펙트 종류 — 확장 가능한 string 타입 */
+export type EffectType = string;
+export const KNOWN_EFFECTS = ['shake', 'glitch', 'colorShift', 'fade', 'distortion'] as const;
+
+/** 효과음 ID — 확장 가능한 string 타입 */
+export type SoundId = string;
+export const KNOWN_SOUNDS = ['doorOpen', 'click', 'choiceSelect'] as const;
+
+/** 배경 앰비언트 트랙 ID — 확장 가능한 string 타입 */
+export type AmbientTrack = string;
+export const KNOWN_AMBIENT_TRACKS = ['facility', 'sector_a', 'sector_b', 'corridor', 'g_sector'] as const;
 
 /** 회차별 오버라이드 */
 export interface PlaythroughOverride {
@@ -21,6 +30,8 @@ export interface PlaythroughOverride {
   cssClass?: string;
   /** 이 노드에서 트리거할 이펙트 */
   effect?: EffectType;
+  /** 이 오버라이드에서 표시할 배경 이미지 경로 (public/ 기준) */
+  bgImage?: string;
 }
 
 /** 선택지 표시 조건 */
@@ -71,10 +82,12 @@ export interface SceneNode {
   endingId?: string;
   /** 배경 CSS 클래스 */
   bgClass?: string;
-  /** 이 노드 진입 시 재생할 효과음 */
-  sound?: 'doorOpen' | 'click' | 'choiceSelect';
-  /** 이 노드 진입 시 전환할 배경 앰비언트 트랙 */
-  ambient?: 'facility' | 'sector_a' | 'sector_b' | 'corridor' | 'g_sector';
+  /** 배경 이미지 경로 (public/ 기준, 예: '/images/chapter1/S01.png') */
+  bgImage?: string;
+  /** 이 노드 진입 시 재생할 효과음 ID */
+  sound?: SoundId;
+  /** 이 노드 진입 시 전환할 배경 앰비언트 트랙 ID */
+  ambient?: AmbientTrack;
 }
 
 /** 챕터 데이터 */

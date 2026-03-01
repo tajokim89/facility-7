@@ -1,0 +1,11 @@
+{
+  "name": "facility-7-dev-root",
+  "private": true,
+  "scripts": {
+    "install:game": "npm install --prefix game",
+    "dev": "npm run dev --prefix game",
+    "build": "npm run build --prefix game",
+    "lint": "npm run lint --prefix game",
+    "preview": "npm run preview --prefix game"
+  }
+}

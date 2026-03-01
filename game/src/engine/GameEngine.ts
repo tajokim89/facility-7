@@ -159,6 +159,12 @@ export class GameEngine {
     return override?.cssClass;
   }
 
+  /** 현재 노드의 배경 이미지 해석 (override 우선) */
+  resolveBgImage(node: SceneNode): string | undefined {
+    const override = this.findActiveOverride(node);
+    return override?.bgImage ?? node.bgImage;
+  }
+
   /** 활성 오버라이드 찾기 */
   private findActiveOverride(node: SceneNode): PlaythroughOverride | undefined {
     if (!node.overrides) return undefined;
