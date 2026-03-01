@@ -80,13 +80,15 @@ export class GameEngine {
       this.remainingEmotion = Math.max(0, Math.min(100, this.remainingEmotion));
     }
 
-    // 백로그 추가
+    // 백로그 추가 (빈 텍스트 라우팅 노드는 제외)
     const resolvedText = this.resolveText(node);
-    this.backlog.push({
-      nodeId: node.id,
-      speaker: node.speaker,
-      text: resolvedText,
-    });
+    if (resolvedText) {
+      this.backlog.push({
+        nodeId: node.id,
+        speaker: node.speaker,
+        text: resolvedText,
+      });
+    }
 
     return node;
   }
@@ -135,7 +137,7 @@ export class GameEngine {
   resolveText(node: SceneNode): string {
     const override = this.findActiveOverride(node);
     if (override?.text) return override.text;
-    if (override?.appendText) return node.text + '\n' + override.appendText;
+    if (override?.appendText) return node.text + override.appendText;
     return node.text;
   }
 
@@ -219,6 +221,11 @@ export class GameEngine {
   /** 세이브 존재 여부 */
   hasSave(): boolean {
     return this.saveManager.loadCurrent() !== null;
+  }
+
+  /** 현재 세이브 삭제 (엔딩 도달 시) */
+  clearSave(): void {
+    this.saveManager.deleteCurrent();
   }
 
   // Getters

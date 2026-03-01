@@ -22,6 +22,7 @@ export default function GameScreen() {
   const [showChoices, setShowChoices] = useState(false);
   const [effectKey, setEffectKey] = useState(0);
   const [endingText, setEndingText] = useState('');
+  const [endingId, setEndingId] = useState('');
 
   const updateState = useCallback((node: SceneNode | null) => {
     if (!node) return;
@@ -84,7 +85,9 @@ export default function GameScreen() {
 
     if (currentNode.endingId) {
       audioManager.stopAmbient();
+      engine.clearSave();
       setEndingText(engine.resolveText(currentNode));
+      setEndingId(currentNode.endingId);
       setScreen('ending');
       return;
     }
@@ -151,13 +154,23 @@ export default function GameScreen() {
   }
 
   if (screen === 'ending') {
+    const endingLabels: Record<string, string> = {
+      'ending_a': 'ENDING A — 괜찮은 직장',
+      'ending_b': 'ENDING B — 무언가 이상한',
+      'ending_c': 'ENDING C — 거울',
+      'ending_d': 'ENDING D — 공허',
+    };
+    const playthroughCount = engine.getPlaythroughCount();
     return (
       <div className="ending-screen">
+        {endingId && (
+          <div className="ending-label">{endingLabels[endingId] ?? endingId}</div>
+        )}
         <div className="ending-text">{endingText}</div>
         <button className="ending-button" onClick={handleReturnToTitle}>
-          {engine.getPlaythroughCount() >= 1 ? 'Re:Observe' : 'Return'}
+          {playthroughCount >= 1 ? 'Re:Observe' : 'Return'}
         </button>
-        {engine.getPlaythroughCount() === 1 && (
+        {playthroughCount === 1 && (
           <div className="ending-hint">
             관찰자 감정 로그 — 1회차 분석 완료. 재관찰을 권장합니다.
           </div>

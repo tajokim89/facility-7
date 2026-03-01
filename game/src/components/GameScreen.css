@@ -56,6 +56,16 @@
   padding: 2rem;
 }
 
+.ending-label {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  font-family: monospace;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  animation: fadeIn 1s ease-in;
+}
+
 .ending-text {
   color: var(--text-primary);
   font-size: 1.1rem;
