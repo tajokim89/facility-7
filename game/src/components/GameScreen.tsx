@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { GameEngine } from '../engine/GameEngine';
 import { audioManager } from '../engine/AudioManager';
 import type { SceneNode } from '../data/schema';
@@ -23,6 +23,7 @@ export default function GameScreen() {
   const [effectKey, setEffectKey] = useState(0);
   const [endingText, setEndingText] = useState('');
   const [endingId, setEndingId] = useState('');
+  const lastBgImageRef = useRef<string | undefined>(undefined);
 
   const updateState = useCallback((initialNode: SceneNode | null) => {
     let node = initialNode;
@@ -184,13 +185,19 @@ export default function GameScreen() {
   const resolvedEffect = engine.resolveEffect(currentNode);
   const resolvedCss = engine.resolveCssClass(currentNode);
   const resolvedBgImage = engine.resolveBgImage(currentNode);
-
-  const bgStyle = resolvedBgImage
-    ? { backgroundImage: `url(${resolvedBgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-    : undefined;
+  if (resolvedBgImage !== undefined) {
+    lastBgImageRef.current = resolvedBgImage;
+  }
+  const displayBgImage = lastBgImageRef.current;
 
   return (
-    <div className={`game-screen ${currentNode.bgClass ?? ''}`} style={bgStyle}>
+    <div className={`game-screen ${currentNode.bgClass ?? ''}`}>
+      {displayBgImage && (
+        <>
+          <img src={displayBgImage} alt="" className="scene-bg" />
+          <div className="scene-bg-overlay" />
+        </>
+      )}
       <EffectLayer effect={resolvedEffect} key={effectKey}>
         <div className="game-viewport">
           <EmotionGauge value={emotion} />

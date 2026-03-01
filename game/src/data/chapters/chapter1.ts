@@ -8,6 +8,7 @@ const chapter1: ChapterData = {
     // === ACT 1: 도착 ===
     {
       id: 'S01',
+      bgImage: '/images/chapter1/S01.png',
       text: '태블릿이 부팅된다.\n\n「관찰자 등록 완료. 감정 처리 시설 7구역 배치.」',
       next: 'S02',
       overrides: [{
@@ -18,6 +19,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S02',
+      bgImage: '/images/chapter1/S02.png',
       text: '엘리베이터가 내려간다. B7... B8... B9...\n\n숫자가 커질수록 형광등 빛이 희미해진다.',
       next: 'S03',
       overrides: [{
@@ -27,6 +29,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S03',
+      bgImage: '/images/chapter1/S03.png',
       speaker: '한서진',
       text: '어서 오세요. 오늘부터 7구역에서 근무하시는 분이죠?\n\n저는 한서진, 선임 관찰자예요. 편하게 해요.',
       next: 'S04',
@@ -55,6 +58,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S06',
+      bgImage: '/images/chapter1/S06.png',
       text: '로커룸. 관찰자 유니폼으로 갈아입는다.\n옆 로커 몇 개가 비어 있다. 이름표가 떼어진 자리만 남아 있었다.',
       next: 'S07',
       overrides: [{
@@ -65,6 +69,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S07',
+      bgImage: '/images/chapter1/S07.png',
       text: 'A구역. 하얀 벽, 하얀 바닥. 무균실처럼 정돈된 공간.\n\n중앙에 투명한 관(Canal)이 연결된 의자가 하나 놓여 있다.',
       next: 'S08',
       sound: 'doorOpen',
@@ -84,11 +89,13 @@ const chapter1: ChapterData = {
     // === ACT 2: 첫 업무 ===
     {
       id: 'S09',
+      bgImage: '/images/chapter1/S09.png',
       text: '첫 번째 대상자가 들어왔다.\n\n중년 남성. 번호 #117. 무표정한 얼굴.\n의자에 앉자 관이 자동으로 연결되었다.',
       next: 'S10',
     },
     {
       id: 'S10',
+      bgImage: '/images/chapter1/S10.png',
       text: '추출이 시작된다. 희미한 회색 액체가 관을 타고 흘러내린다.\n\n태블릿 화면: 「감정 유형: 권태 / 농도: 0.34 / 상태: 정상」',
       next: 'S11',
       overrides: [{
@@ -156,11 +163,13 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S14',
+      bgImage: '/images/chapter1/S14.png',
       text: '두 번째 대상자. 젊은 여성. 번호 #203.\n\n의자에 앉는 순간, 눈에 공포가 가득했다.',
       next: 'S15',
     },
     {
       id: 'S15',
+      bgImage: '/images/chapter1/S14_ALERT.png',
       text: '추출이 시작되자 대상자가 비명을 질렀다.\n관 속 액체가 탁한 빨강으로 변한다. 끓어오르듯 기포가 인다.\n\n태블릿: 「경고 — 감정 유형: 원한 / 농도: 위험 / 비상 프로토콜 권장」',
       choices: [
         {
@@ -195,6 +204,7 @@ const chapter1: ChapterData = {
     // === ACT 3: 점심 ===
     {
       id: 'S17',
+      bgImage: '/images/chapter1/S17.png',
       text: '휴게실. 자판기 하나와 간이 테이블.\n\n다른 관찰자 서너 명이 조용히 앉아 있다. 아무도 대화하지 않는다.',
       next: 'S18',
       ambient: 'corridor',
@@ -205,6 +215,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S18',
+      bgImage: '/images/chapter1/S18.png',
       speaker: '이준혁',
       text: '야, 신입이지? 나 이준혁. 여기 몇 번째야?',
       choices: [
@@ -246,6 +257,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S19',
+      bgImage: '/images/chapter1/S19.png',
       text: '자판기에서 음료를 뽑았다. 미지근한 액체가 컵에 담긴다.',
       next: 'S20',
       overrides: [{
