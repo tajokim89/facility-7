@@ -16,16 +16,15 @@ const EFFECT_DURATION: Record<string, number> = {
 };
 
 export default function EffectLayer({ effect, children }: Props) {
-  const [activeEffect, setActiveEffect] = useState<string | null>(null);
+  // key prop으로 리마운트되므로, effect를 초기값으로 직접 설정
+  const [activeEffect, setActiveEffect] = useState<string | null>(effect ?? null);
 
   useEffect(() => {
-    if (!effect) return;
-    setActiveEffect(effect);
-
-    const duration = EFFECT_DURATION[effect] ?? 1000;
+    if (!activeEffect) return;
+    const duration = EFFECT_DURATION[activeEffect] ?? 1000;
     const timer = setTimeout(() => setActiveEffect(null), duration);
     return () => clearTimeout(timer);
-  }, [effect]);
+  }, [activeEffect]);
 
   return (
     <div

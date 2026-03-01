@@ -15,29 +15,24 @@ export default function DialogueBox({ speaker, text, cssClass, onComplete }: Pro
   const [isTyping, setIsTyping] = useState(true);
   const indexRef = useRef(0);
   const timerRef = useRef<number | null>(null);
+  // text는 key prop으로 리마운트되므로 컴포넌트 생애주기 동안 불변 — ref로 캡처
+  const textRef = useRef(text);
 
-  // 텍스트 변경 시 타이핑 초기화
+  // 마운트 시 타이핑 시작 (타이머 콜백 안에서만 setState)
   useEffect(() => {
-    setDisplayedText('');
-    setIsTyping(true);
-    indexRef.current = 0;
-
+    const txt = textRef.current;
     const type = () => {
-      if (indexRef.current < text.length) {
-        indexRef.current++;
-        setDisplayedText(text.slice(0, indexRef.current));
+      indexRef.current++;
+      if (indexRef.current <= txt.length) {
+        setDisplayedText(txt.slice(0, indexRef.current));
         timerRef.current = window.setTimeout(type, TYPING_SPEED);
       } else {
         setIsTyping(false);
       }
     };
-
     timerRef.current = window.setTimeout(type, TYPING_SPEED);
-
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [text]);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
 
   const handleClick = useCallback(() => {
     if (isTyping) {

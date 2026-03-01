@@ -24,38 +24,36 @@ export default function GameScreen() {
   const [endingText, setEndingText] = useState('');
   const [endingId, setEndingId] = useState('');
 
-  const updateState = useCallback((node: SceneNode | null) => {
-    if (!node) return;
-    setCurrentNode(node);
-    setEmotion(engine.getRemainingEmotion());
-    setEffectKey(k => k + 1);
+  const updateState = useCallback((initialNode: SceneNode | null) => {
+    let node = initialNode;
+    while (node) {
+      setCurrentNode(node);
+      setEmotion(engine.getRemainingEmotion());
+      setEffectKey(k => k + 1);
 
-    // 빈 텍스트 노드(분기 체크용)는 자동 처리
-    const resolvedText = engine.resolveText(node);
-    if (!resolvedText) {
-      const available = engine.getAvailableChoices();
-      if (available.length > 0) {
-        // 조건 맞는 첫 번째 선택지로 자동 이동
-        const next = engine.selectChoice(0);
-        if (next) { updateState(next); return; }
-      } else if (node.next) {
-        // 선택지가 모두 필터링됐거나 없으면 next로 자동 진행
-        const next = engine.advance();
-        if (next) { updateState(next); return; }
+      // 빈 텍스트 노드(분기 체크용)는 자동 처리 — 루프로 처리해 재귀 제거
+      const resolvedText = engine.resolveText(node);
+      if (!resolvedText) {
+        const available = engine.getAvailableChoices();
+        if (available.length > 0) {
+          node = engine.selectChoice(0);
+          continue;
+        } else if (node.next) {
+          node = engine.advance();
+          continue;
+        }
       }
-    }
 
-    // 효과음 재생
-    if (node.sound === 'doorOpen') audioManager.playDoorOpen();
+      if (node.sound === 'doorOpen') audioManager.playDoorOpen();
+      if (node.ambient) audioManager.playAmbient(node.ambient);
 
-    // 배경 앰비언트 전환
-    if (node.ambient) audioManager.playAmbient(node.ambient);
+      const choices = engine.getAvailableChoices();
+      setShowChoices(choices.length > 0);
 
-    const choices = engine.getAvailableChoices();
-    setShowChoices(choices.length > 0);
-
-    if (node.endingId) {
-      engine.reachEnding(node.endingId);
+      if (node.endingId) {
+        engine.reachEnding(node.endingId);
+      }
+      break;
     }
   }, [engine]);
 
@@ -210,6 +208,7 @@ export default function GameScreen() {
 
           {resolvedText && (
             <DialogueBox
+              key={currentNode.id}
               speaker={resolvedSpeaker}
               text={resolvedText}
               cssClass={resolvedCss}
