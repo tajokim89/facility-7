@@ -1,4 +1,4 @@
-import type { ChapterData } from './schema';
+import type { ChapterData } from '../schema';
 
 const chapter1: ChapterData = {
   id: 'chapter1',

@@ -17,6 +17,23 @@
   background: linear-gradient(180deg, var(--bg-color) 0%, #0d0808 100%);
 }
 
+/* 씬 배경 이미지 — bgImage 설정 시 인라인 스타일로 적용됨
+   게임 뷰포트에 반투명 오버레이를 올려 텍스트 가독성 확보 */
+.game-screen[style*="background-image"] .game-viewport::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 0;
+}
+.game-screen[style*="background-image"] .game-viewport > * {
+  position: relative;
+  z-index: 1;
+}
+.game-screen {
+  transition: background-image 0.4s ease;
+}
+
 /* 툴바 */
 .game-toolbar {
   position: absolute;

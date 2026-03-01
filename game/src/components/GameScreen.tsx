@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { GameEngine } from '../engine/GameEngine';
 import { audioManager } from '../engine/AudioManager';
 import type { SceneNode } from '../data/schema';
-import chapter1 from '../data/chapter1';
+import chapter1 from '../data/chapters/chapter1';
 import DialogueBox from './DialogueBox';
 import ChoicePanel from './ChoicePanel';
 import EmotionGauge from './EmotionGauge';
@@ -44,7 +44,7 @@ export default function GameScreen() {
         }
       }
 
-      if (node.sound === 'doorOpen') audioManager.playDoorOpen();
+      if (node.sound) audioManager.playSound(node.sound);
       if (node.ambient) audioManager.playAmbient(node.ambient);
 
       const choices = engine.getAvailableChoices();
@@ -183,9 +183,14 @@ export default function GameScreen() {
   const resolvedSpeaker = engine.resolveSpeaker(currentNode);
   const resolvedEffect = engine.resolveEffect(currentNode);
   const resolvedCss = engine.resolveCssClass(currentNode);
+  const resolvedBgImage = engine.resolveBgImage(currentNode);
+
+  const bgStyle = resolvedBgImage
+    ? { backgroundImage: `url(${resolvedBgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+    : undefined;
 
   return (
-    <div className={`game-screen ${currentNode.bgClass ?? ''}`}>
+    <div className={`game-screen ${currentNode.bgClass ?? ''}`} style={bgStyle}>
       <EffectLayer effect={resolvedEffect} key={effectKey}>
         <div className="game-viewport">
           <EmotionGauge value={emotion} />
