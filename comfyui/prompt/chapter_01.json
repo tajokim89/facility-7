@@ -97,5 +97,66 @@
     "composition_ref": "style_reference.png",
     "weight": 0.3,
     "use_outpaint": true
+  },
+  {
+    "id": "S20",
+    "prompt": "A close-up cinematic shot of a (minimalist futuristic PA speaker:1.3) mounted on a sterile white wall. (Subtle vibrations:1.2) are visible. Cold high-key clinical lighting, sharp metallic textures, symmetrical composition, 8k uhd.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "S21",
+    "prompt": "A wide cinematic shot of the entrance to Sector B (Precision Extraction). The room is filled with (complex glass machinery and delicate glowing tubes:1.4). (Soft ethereal blue and silver lighting:1.3). The environment is even more pristine and high-tech than Sector A. 8k uhd, photorealistic.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "S22",
+    "prompt": "A macro cinematic shot of a transparent glass tube filled with (shimmering iridescent silver liquid:1.5). The liquid (sparkles with tiny micro-crystals:1.3) as it flows. Soft bokeh background of a sterile laboratory, ethereal clinical lighting, 8k uhd.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "S23",
+    "prompt": "A medium shot of a (minimalist white directional sign:1.3) on a sterile corridor wall. The sign points to 'Sector A', 'Sector B', 'Sector C', and (ominously towards 'Sector F' and 'Sector G':1.4). Vanishing point perspective, cold fluorescent lighting, perfectly straight lines, 8k uhd.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "S24",
+    "prompt": "A POV shot looking towards a (heavy metal door with a red 'G SECTOR - RESTRICTED' sign:1.4). The corridor is dim and oppressive. Cold industrial textures, harsh shadows, 8k uhd.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "S24b",
+    "prompt": "A wide-angle shot of a (room filled with infinite mirrors:1.5). (Infinite reflections of a single empty clinical chair:1.4) receding into the distance. (Disorienting perspective:1.3), high-contrast lighting, eerie silence, 8k uhd.",
+    "negative_prompt": "people, observer, reflection of camera",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "S25",
+    "prompt": "A (full body cinematic shot:1.2) of an elderly Korean man (Subject #089) sitting in the futuristic white chair. (Soft pale yellow liquid:1.4) is flowing through the tubes. He has a (peaceful, vacant expression:1.3). Warm yellow clinical lighting, sterile white room, 8k uhd.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "S26a",
+    "prompt": "A close-up of a (glitching medical tablet screen:1.5). The screen is filled with (red error messages, distorted data, and scanlines:1.4). (Chromatic aberration effects:1.3). The word 'ACCESS DENIED' is visible through the corruption. 8k uhd, photorealistic.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "ENDING_A",
+    "prompt": "A wide cinematic shot of a (lonely figure in a white uniform walking towards a distant sunset:1.3) outside the facility. The architecture of the facility is visible behind. (A sense of hollow peace:1.2). Desaturated colors, 8k uhd.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "ENDING_B",
+    "prompt": "A POV shot in a (dimly lit, minimalist apartment:1.3). A single medical tablet lies on a table, (glowing with a faint, ominous blue light in the dark:1.4). Cold blue moonlight from the window, deep shadows, oppressive atmosphere, 8k uhd.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "ENDING_C",
+    "prompt": "A close-up of a (reflection in a polished elevator mirror:1.4). (The character's face looks unnervingly still and emotionless:1.5). In the reflection, a (digital label '#042' is faintly superimposed over the forehead:1.4). (Glitch effects on the mirror surface:1.3). Cold flickering light, 8k uhd.",
+    "style_ref": "style_reference.png"
+  },
+  {
+    "id": "ENDING_D",
+    "prompt": "A shot of a (completely black tablet screen:1.4) lying on a white sterile floor. (The lights in the room are fading to black:1.3). A sense of total emptiness and void. High contrast, minimalist composition, 8k uhd.",
+    "style_ref": "style_reference.png"
   }
 ]
