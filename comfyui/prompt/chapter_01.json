@@ -1,127 +1,101 @@
 [
   {
+    "id": "REF_SUB_117",
+    "prompt": "A (raw photo:1.3) of a (middle-aged Korean man:1.4) with a (deeply exhausted and sorrowful face:1.3), (1man:1.6), (masculine:1.5), short salt and pepper hair. His eyes are (lost and pleading:1.4), reflecting a sense of broken humanity. He looks like a regular person who has lost all hope. (Visible skin pores:1.2), soft natural skin texture. Plain grey hospital gown, soft clinical lighting, shot on 85mm lens, f/1.8, sharp focus, 8k uhd.",
+    "negative_prompt": "woman, female, girl, lipstick, makeup, (grotesque, monster, zombie:1.5), (smooth skin, plastic skin:1.4), (cartoon, anime, 3d render:1.3), low quality, blurry",
+    "is_reference": true
+  },
+  {
+    "id": "REF_SUB_203",
+    "prompt": "A (raw photo:1.3) of a (young Korean woman in her early 20s:1.4), (1woman:1.5), wearing a simple white patient gown. Her face is a portrait of (heartbreaking vulnerability and quiet terror:1.6), (eyes glistening with tears:1.5), (quivering lips:1.3). She looks like an innocent student caught in a terrifying medical experiment. (Soft natural skin texture:1.2), (visible skin pores:1.1). High-key clinical lighting with soft shadows, shot on 85mm lens, f/1.8, sharp focus on her pleading eyes, 8k uhd.",
+    "negative_prompt": "man, male, boy, (grotesque, monster, zombie:1.5), (smile, happy, calm:1.5), (plastic skin, smooth skin:1.4), (cartoon, anime, 3d render:1.3), low quality, blurry, heavy makeup",
+    "is_reference": true
+  },
+  {
+    "id": "REF_LEE_JUN_HYEOK",
+    "prompt": "A (raw photo:1.3) of a (young Korean man:1.4), (1man:1.5), masculine, short neat dark hair, sharp jawline, wearing a crisp white medical uniform. (Cynical observant gaze:1.4), slight smirk, sharp facial features. (Visible skin pores:1.2), natural skin texture. Minimalist clinical white background, professional studio lighting, shot on 85mm lens, f/1.8, sharp focus, 8k uhd.",
+    "negative_prompt": "woman, female, girl, lipstick, long hair, (plastic skin, smooth skin:1.3), (cartoon, anime, 3d render:1.2), low quality, blurry, distorted",
+    "is_reference": true
+  },
+  {
     "id": "S01",
-    "seed": 1001,
-    "prompt": "Masterpiece, 8k, clinical horror, POV, a sleek futuristic black tablet booting up in a dimly lit sterile room, glowing blue screen displaying 'Observer Registered: Sector 7', sharp focus on the digital interface, uncanny atmosphere, minimalist aesthetic, photorealistic."
+    "prompt": "First-person POV looking down at a hand holding a glowing futuristic tablet. A high-tech electronic device with a glowing cyan screen displaying medical data. (Extreme close up:1.4) showing (detailed skin texture of the hand:1.2), fingerprints visible. Clinical laboratory background with soft bokeh, cinematic lighting, shot on 35mm lens, f/2.8, 8k uhd.",
+    "style_ref": "style_reference.png",
+    "weight": 0.0
   },
   {
     "id": "S02",
-    "seed": 1002,
-    "prompt": "Masterpiece, 8k, clinical horror, POV inside a descending futuristic elevator, metallic walls reflecting flickering cold fluorescent lights, digital floor indicator showing 'B9', the lighting getting darker and greyish, industrial minimalism, claustrophobic and ominous mood."
+    "prompt": "Interior of a dim, claustrophobic industrial elevator. Scratched metallic walls, cold steel textures. A small digital display glows with the number 'B9' in red. Flickering fluorescent overhead lights creating harsh volumetric shadows. Cinematic horror atmosphere, industrial aesthetic, shot on 24mm wide-angle lens, 8k uhd.",
+    "style_ref": "style_reference.png"
   },
   {
     "id": "S03",
-    "seed": 1003,
-    "prompt": "Masterpiece, 8k, clinical horror, Han Se-jin standing in a blindingly white sterile lobby, wearing a crisp pristine white clinical uniform, uncomfortably neutral expression, dead empty eyes, symmetrical composition, polished marble floor with sharp reflections, cold atmospheric lighting."
-  },
-  {
-    "id": "S04",
-    "seed": 1004,
-    "prompt": "Masterpiece, 8k, clinical horror, infinite white corridor, symmetrical architecture, high-tech signs for 'SECTOR A', 'SECTOR B', 'SECTOR C' glowing on the walls, Han Se-jin walking ahead in her white uniform, vanishing point perspective, eerie silence, too clean to be human."
-  },
-  {
-    "id": "S05",
-    "seed": 1005,
-    "prompt": "Masterpiece, 8k, clinical horror, extreme close-up of Han Se-jin's face, pale skin, unnervingly still and emotionless, soft shadows, blueish clinical light, sharp focus on her dead eyes, uncanny valley aesthetic."
+    "prompt": "A medium cinematic shot of Han Se-jin standing in the middle of an infinite long sterile white corridor. (One-point perspective:1.3) with (rows of repeating identical white doors on both sides:1.4) receding into a distant vanishing point. (Architectural photography:1.2), perfectly straight lines, symmetrical composition. High-key clinical white lighting, minimalist futuristic design, 8k uhd.",
+    "negative_prompt": "wall behind character, end of hallway, corner, curved lines, distorted perspective",
+    "composition_ref": "images/ref/REF_HAN_SE_JIN.png",
+    "weight": 0.8
   },
   {
     "id": "S06",
-    "seed": 1006,
-    "prompt": "Masterpiece, 8k, clinical horror, a row of sterile white lockers in a locker room, some lockers have nameplates torn off leaving dark rectangular stains, a small label on one locker reading 'Observer #041 — Processed', eerie lighting, cold and empty space."
+    "prompt": "A wide architectural shot of an empty, sterile locker room. Rows of (polished white metal lockers:1.2) with (perfectly straight parallel lines:1.3). A small peeling label on one locker reads 'Observer #041 - PROCESSED'. Cold high-contrast clinical lighting, sharp metallic reflections, rectilinear perspective, 8k uhd.",
+    "negative_prompt": "curved lines, fish-eye, distorted, warped, people",
+    "style_ref": "style_reference.png"
   },
   {
     "id": "S07",
-    "seed": 1007,
-    "prompt": "Masterpiece, 8k, clinical horror, Sector A, a vast empty white room, a single high-tech extraction chair in the center, transparent 'Canal' tubes connected to the chair, bright over-exposed overhead lights, clean room aesthetic, terrifyingly pristine."
+    "prompt": "A wide-angle cinematic shot of a sterile white medical room (Sector A). (Symmetrical composition:1.3) with perfectly straight lines. In the center, a single empty futuristic white chair with (transparent glass tubes:1.2) snaking across the floor. Eerie silence, perfectly clean, high-tech clinical environment, shot on Sony A7R IV, 8k uhd.",
+    "negative_prompt": "curved lines, fish-eye, distorted, people",
+    "style_ref": "style_reference.png"
   },
   {
     "id": "S08",
-    "seed": 1008,
-    "prompt": "Masterpiece, 8k, clinical horror, hand holding a tablet showing status monitors and checklists of a subject, blurred laboratory background with clinical equipment, cold blue light reflecting on the screen, diagnostic interface."
+    "prompt": "A medium cinematic shot of Han Se-jin standing in the sterile Sector A room. She is holding a glowing medical tablet. The white futuristic chair is visible in the background. (Symmetrical architectural layout:1.2), perfectly straight lines. High-key clinical lighting, sharp focus on the character, natural skin texture, 8k uhd.",
+    "negative_prompt": "curved lines, fish-eye, distorted, warped",
+    "composition_ref": "images/ref/REF_HAN_SE_JIN.png",
+    "weight": 0.8
   },
   {
     "id": "S09",
-    "seed": 1009,
-    "prompt": "Masterpiece, 8k, clinical horror, a middle-aged man (Subject #117) with a hollow expressionless face sitting in the extraction chair, transparent tubes connected to his neck and arms, sterile white background, high contrast, cinematic lighting."
+    "prompt": "A (full body cinematic shot:1.2) of a middle-aged Korean man (Subject #117) sitting in a (high-tech white futuristic clinical chair:1.4) in a sterile white Sector A room. (Multiple transparent tubes/canals are connected to the chair and his body:1.4). (Faint murky grey liquid is flowing through the transparent tubes:1.3). He has a (completely vacant and expressionless face:1.5) with a (thousand-yard stare:1.4). The environment is a (pristine white cleanroom:1.3) with (perfectly straight architectural lines:1.3) and cold clinical lighting. 8k uhd, photorealistic.",
+    "negative_prompt": "smiling, happy, healthy, standing, extra fingers, mutated hands, deformed body, (grey borders:1.4), (empty padding:1.4), blurry, low quality",
+    "composition_ref": "images/ref/REF_SUB_117.png",
+    "weight": 0.4
   },
   {
     "id": "S10",
-    "seed": 1010,
-    "prompt": "Masterpiece, 8k, clinical horror, macro shot of transparent glass tubes, a viscous faint gray liquid 'Boredom' flowing slowly inside, tiny bubbles, clinical detail, cold and disgusting texture, macro photography."
-  },
-  {
-    "id": "S12",
-    "seed": 1012,
-    "prompt": "Masterpiece, 8k, clinical horror, Subject #117 walking out of the room, mechanical and hollow gait, back view, long shadows on a perfectly white floor, the man looks like an empty shell, wide shot."
+    "prompt": "A macro close-up shot of a transparent glass tube. (Viscous murky grey liquid:1.3) with tiny bubbles flowing through the tube. (Extreme detail:1.2) of the liquid texture and glass reflections. Sterile white background with soft bokeh, sharp focus on the liquid, cinematic clinical lighting, 8k uhd.",
+    "style_ref": "style_reference.png"
   },
   {
     "id": "S14",
-    "seed": 1014,
-    "prompt": "Masterpiece, 8k, clinical horror, a young woman (Subject #203) sitting in the chair, eyes wide with pure terror and despair, gripping the armrests, sterile white environment contrasting with her emotional agony."
+    "prompt": "A (full body cinematic shot:1.2) of a young Korean woman (Subject #203) wearing a (clean white hospital gown that covers her lap:1.4), sitting in a (white high-tech clinical chair:1.3). (Vibrant bubbling red liquid is contained STRICTLY inside the transparent tubes:1.7) that surround the chair. Her face shows a (terrified and surprised expression:1.4). (The area between her legs is a perfectly clean, empty white void with NO objects:1.8). Bright sterile white Sector A room, cold clinical lighting, 8k uhd.",
+    "negative_prompt": "naked, nudity, genitals, mechanical device between legs, tubes in crotch, artifact on lap, blood on skin, blood on clothes, liquid leaking, fire, flames, extra fingers, mutated hands, distorted body",
+    "composition_ref": "images/ref/REF_SUB_203.png",
+    "weight": 0.5
   },
   {
     "id": "S15",
-    "seed": 1015,
-    "prompt": "Masterpiece, 8k, clinical horror, close-up of the tubes, the liquid turning into a boiling bubbling dark red 'Hatred', red emergency lights reflecting on the glass and white walls, intense and scary, visceral emotion."
+    "prompt": "A macro cinematic shot of medical tubes filled with (bubbling thick dark red liquid:1.3). The background is flashing with (intense red emergency lights:1.4). High-contrast visceral detail, sharp focus on the rushing liquid, motion blur, 8k uhd.",
+    "style_ref": "style_reference.png"
   },
   {
     "id": "S17",
-    "seed": 1017,
-    "prompt": "Masterpiece, 8k, clinical horror, liminal space, empty breakroom, a single vending machine with cold blue light, white plastic tables, several observers sitting far apart, all with the exact same expressionless face, uncanny repetition."
+    "prompt": "A wide architectural shot of a sterile minimalist hospital break room. (A futuristic white vending machine glowing with cold light:1.3) is on one side. (Minimalist white clinical sofas:1.2) are arranged in a symmetrical composition. Several observers in white uniforms are sitting far apart on the sofas, staring into space. Cold fluorescent lighting, desolate atmosphere, perfectly straight lines, 8k uhd.",
+    "style_ref": "style_reference.png",
+    "use_outpaint": true
   },
   {
     "id": "S18",
-    "seed": 1018,
-    "prompt": "Masterpiece, 8k, clinical horror, a man 'Lee Jun-hyuk' sitting across a table, his eyes are bloodshot but he has an uncomfortably wide smile, clinical breakroom background, unsettling and creepy."
+    "prompt": "A medium cinematic shot of Lee Jun-hyeok leaning against a sterile white wall. (Cynical half-smile:1.3), observant gaze. (Natural skin texture:1.2) with visible pores. High-key clinical lighting, sharp focus on character, symmetrical room layout, perfectly straight lines, 8k uhd.",
+    "composition_ref": "images/ref/REF_LEE_JUN_HYEOK.png",
+    "weight": 0.8
   },
   {
     "id": "S19",
-    "seed": 1019,
-    "prompt": "Masterpiece, 8k, clinical horror, close-up of a paper cup on a white table being filled with a viscous gray liquid from a vending machine, the liquid looks like the Boredom extract, eerie and unsettling."
-  },
-  {
-    "id": "S22",
-    "seed": 1022,
-    "prompt": "Masterpiece, 8k, clinical horror, Sector B, beautiful shimmering silver liquid 'Longing' flowing through crystalline pipes, ethereal glow, micro-particles, melancholic beauty within a sterile cage, cinematic lighting."
-  },
-  {
-    "id": "S24b",
-    "seed": 1024,
-    "prompt": "Masterpiece, 8k, clinical horror, Sector G Mirror Room, infinite reflections of a white room, distorted green light, a figure in a clinical uniform sitting in the distance, glitch effects, psychological horror, mind-bending composition."
-  },
-  {
-    "id": "S25",
-    "seed": 1025,
-    "prompt": "Masterpiece, 8k, clinical horror, an old man (Subject #089) sitting in the chair, a soft pale yellow liquid 'Relief' flowing through the tubes, he looks uncomfortably peaceful like a wax doll, sterile laboratory."
-  },
-  {
-    "id": "S26a",
-    "seed": 1026,
-    "prompt": "Masterpiece, 8k, clinical horror, tablet screen with glitching red text, 'Access Denied', 'Observer Degradation Detected', reflections of a face on the screen, dark background, technical failure aesthetic."
-  },
-  {
-    "id": "S28",
-    "seed": 1028,
-    "prompt": "Masterpiece, 8k, clinical horror, inside the elevator going up, the reflection of the observer in the metallic door, the reflection's eyes are glowing faintly or missing, dark and moody, transition to the outside world."
-  },
-  {
-    "id": "ending_normal",
-    "seed": 2001,
-    "prompt": "Masterpiece, 8k, clinical horror, a minimalist modern apartment at night, a person sitting alone on a sofa staring at a TV showing static, total silence, cold and lonely atmosphere."
-  },
-  {
-    "id": "ending_uneasy",
-    "seed": 2002,
-    "prompt": "Masterpiece, 8k, clinical horror, looking into a dark bathroom mirror, the observer's face is losing all color and emotion, gray tint to the skin, haunting and subtle horror, high contrast."
-  },
-  {
-    "id": "ending_mirror",
-    "seed": 2003,
-    "prompt": "Masterpiece, 8k, clinical horror, close-up of a cracked mirror, reflection of a face with 'Subject #042' text burned into the forehead in a digital font, glitch effects, terrifying realization."
-  },
-  {
-    "id": "ending_empty",
-    "seed": 2004,
-    "prompt": "Masterpiece, 8k, clinical horror, POV sitting in the extraction chair in a pure white void, Han Se-jin standing over with a needle, the world fading to blinding white, total emptiness and loss of self."
+    "prompt": "A (single isolated small white paper cup:1.6) placed exactly in the (center:1.4) of a (wide empty sterile white clinical table:1.3). The cup is filled with (flat murky opaque grey liquid:1.4). (Clearly visible wisps of lukewarm steam rising gracefully from the cup:1.5). (Masterpiece:1.2), (photorealistic:1.3), (8k uhd:1.2). The scale is clearly hand-sized. No other objects on the table, just one cup. Cold clinical lighting, sharp focus on the cup and the steam, clean minimalist composition.",
+    "negative_prompt": "multiple cups, two cups, group of cups, giant cup, huge cup, oversized, bucket, holes in cup, straw hole, lid, bubbles, foam, patterns, text, logo, colorful, warm light, messy, cluttered",
+    "composition_ref": "style_reference.png",
+    "weight": 0.3,
+    "use_outpaint": true
   }
 ]

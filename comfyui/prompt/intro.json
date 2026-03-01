@@ -1,0 +1,16 @@
+[
+  {
+    "id": "TITLE_NORMAL",
+    "prompt": "A cinematic medium shot from a security guard's perspective. (On a cold metallic desk: 1bulky old CRT monitor turned off on the left:1.5), (1vintage desk lamp turned on on the far right:1.5) casting a dim warm amber glow. In the center, (1mechanical keyboard, 1wired mouse, and 1stained white ceramic mug:1.5). (Immediately behind the desk: 1large observation window looking into a long, blindingly bright sterile facility hallway with repeating fluorescent lights:1.6). In the hallway, a (distant figure in a white hazmat suit is pushing a medical cart:1.4). (Cold desaturated teal and grey color palette:1.4). (Extreme textural detail: grime on the mug, scratches on the metal desk:1.4). (Shot on Arri Alexa, 35mm lens, high micro-contrast:1.3). Masterpiece, 8k uhd, clinical horror aesthetic.",
+    "negative_prompt": "multiple monitors, multiple lamps, multiple desks, two monitors, two lamps, modern flat screen, laptop, people in the guard room, sunlight, nature, (text:1.4), watermark, blurry, messy, cluttered",
+    "style_ref": "style_reference.png",
+    "use_outpaint": true
+  },
+  {
+    "id": "TITLE_GLITCH",
+    "prompt": "Same security desk and window view, but (heavily corrupted by digital glitch effects and data rot:1.5). (The single CRT monitor is alive with aggressive green static and distorted human silhouettes:1.6). (The single desk lamp is flickering violently in a deep red pulse:1.4). (Through the window, the hallway is filled with thick red mist and long eerie shadows:1.6). The figure in the hazmat suit is now a (dark glitching shadow:1.4). (Heavy chromatic aberration, scanlines, atmospheric horror:1.5), 8k uhd, sharp focus on the corrupted objects.",
+    "negative_prompt": "clean, peaceful, bright, steady light, nature, sun, warm colors, (text:1.4), watermark, blurry",
+    "style_ref": "style_reference.png",
+    "use_outpaint": true
+  }
+]

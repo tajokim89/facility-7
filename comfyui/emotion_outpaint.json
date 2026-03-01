@@ -2,17 +2,16 @@
   "5": {
     "inputs": { "samples": ["6", 0], "vae": ["11", 2] },
     "class_type": "VAEDecode",
-    "_meta": { "title": "VAE Decode" }
+    "_meta": { "title": "VAE Decode (Base)" }
   },
   "6": {
     "inputs": {
-      "seed": 485468623358494, "steps": 25, "cfg": 7, "sampler_name": "euler", "scheduler": "simple", "denoise": 1,
+      "seed": 0, "steps": 25, "cfg": 7, "sampler_name": "euler", "scheduler": "simple", "denoise": 1,
       "model": ["15", 0], "positive": ["10", 0], "negative": ["9", 0], "latent_image": ["8", 0]
     },
     "class_type": "KSampler",
-    "_meta": { "title": "KSampler" }
+    "_meta": { "title": "KSampler (Base)" }
   },
-  "7": { "inputs": { "images": ["5", 0] }, "class_type": "PreviewImage", "_meta": { "title": "Preview Image" } },
   "8": { "inputs": { "width": 1024, "height": 1024, "batch_size": 1 }, "class_type": "EmptyLatentImage", "_meta": { "title": "Empty Latent Image" } },
   "9": { "inputs": { "text": "", "clip": ["11", 1] }, "class_type": "CLIPTextEncode", "_meta": { "title": "CLIP Text Encode (Negative)" } },
   "10": { "inputs": { "text": "", "clip": ["11", 1] }, "class_type": "CLIPTextEncode", "_meta": { "title": "CLIP Text Encode (Positive)" } },
@@ -21,7 +20,7 @@
     "class_type": "CheckpointLoaderSimple",
     "_meta": { "title": "Load Checkpoint" }
   },
-  "12": { "inputs": { "filename_prefix": "emotion_", "images": ["5", 0] }, "class_type": "SaveImage", "_meta": { "title": "Save Image" } },
+  "12": { "inputs": { "filename_prefix": "emotion_outpaint_", "images": ["21", 0] }, "class_type": "SaveImage", "_meta": { "title": "Save Final Outpainted Image" } },
   "13": {
     "inputs": { "model": ["11", 0], "preset": "STANDARD (medium strength)" },
     "class_type": "IPAdapterUnifiedLoader",
@@ -35,7 +34,7 @@
   "15": {
     "inputs": {
       "model": ["13", 0], "ipadapter": ["13", 1], "image": ["17", 0],
-      "weight": 0.8, "weight_type": "style transfer", "combine_embeds": "concat",
+      "weight": 0.8, "weight_type": "standard", "combine_embeds": "concat",
       "start_at": 0.0, "end_at": 1.0, "embeds_scaling": "V override"
     },
     "class_type": "IPAdapter",
@@ -50,5 +49,36 @@
     "inputs": { "image1": ["14", 0], "image2": ["16", 0] },
     "class_type": "ImageBatch",
     "_meta": { "title": "Image Batch (Combine Refs)" }
+  },
+  "18": {
+    "inputs": {
+      "left": 448, "top": 28, "right": 448, "bottom": 28, "feathering": 40,
+      "image": ["5", 0]
+    },
+    "class_type": "ImagePadForOutpaint",
+    "_meta": { "title": "Pad Image for Outpainting" }
+  },
+  "19": {
+    "inputs": {
+      "grow_mask_by": 6,
+      "pixels": ["18", 0],
+      "vae": ["11", 2],
+      "mask": ["18", 1]
+    },
+    "class_type": "VAEEncodeForInpaint",
+    "_meta": { "title": "VAE Encode (for Inpainting)" }
+  },
+  "20": {
+    "inputs": {
+      "seed": 0, "steps": 25, "cfg": 7, "sampler_name": "euler", "scheduler": "simple", "denoise": 0.95,
+      "model": ["15", 0], "positive": ["10", 0], "negative": ["9", 0], "latent_image": ["19", 0]
+    },
+    "class_type": "KSampler",
+    "_meta": { "title": "KSampler (Outpaint)" }
+  },
+  "21": {
+    "inputs": { "samples": ["20", 0], "vae": ["11", 2] },
+    "class_type": "VAEDecode",
+    "_meta": { "title": "VAE Decode (Final)" }
   }
 }

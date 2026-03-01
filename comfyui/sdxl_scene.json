@@ -1,0 +1,43 @@
+{
+  "5": {
+    "inputs": { "samples": ["6", 0], "vae": ["11", 2] },
+    "class_type": "VAEDecode",
+    "_meta": { "title": "VAE Decode" }
+  },
+  "6": {
+    "inputs": {
+      "seed": 0, "steps": 35, "cfg": 7, "sampler_name": "dpmpp_2m_sde", "scheduler": "karras", "denoise": 1,
+      "model": ["15", 0], "positive": ["10", 0], "negative": ["9", 0], "latent_image": ["8", 0]
+    },
+    "class_type": "KSampler",
+    "_meta": { "title": "KSampler" }
+  },
+  "8": { "inputs": { "width": 1920, "height": 1080, "batch_size": 1 }, "class_type": "EmptyLatentImage", "_meta": { "title": "Empty Latent Image" } },
+  "9": { "inputs": { "text": "naked, nude, shirtless, bare skin, bare chest, genitals, text, watermark, blurry, low quality, distorted, extra limbs, bad anatomy, duplicate, deformed", "clip": ["11", 1] }, "class_type": "CLIPTextEncode", "_meta": { "title": "CLIP Text Encode (Negative)" } },
+  "10": { "inputs": { "text": "", "clip": ["11", 1] }, "class_type": "CLIPTextEncode", "_meta": { "title": "CLIP Text Encode (Positive)" } },
+  "11": {
+    "inputs": { "ckpt_name": "juggernautXL_ragnarokBy.safetensors" },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": { "title": "Load Checkpoint (SDXL)" }
+  },
+  "12": { "inputs": { "filename_prefix": "sdxl_", "images": ["5", 0] }, "class_type": "SaveImage", "_meta": { "title": "Save Image" } },
+  "13": {
+    "inputs": { "model": ["11", 0], "preset": "STANDARD (medium strength)", "ipadapter_name": "ip.adapter.sdxl.vit.h.safetensors" },
+    "class_type": "IPAdapterUnifiedLoader",
+    "_meta": { "title": "IPAdapter Unified Loader (SDXL)" }
+  },
+  "14": {
+    "inputs": { "image": "style_reference.png", "upload": "image" },
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load Image (Style)" }
+  },
+  "15": {
+    "inputs": {
+      "model": ["13", 0], "ipadapter": ["13", 1], "image": ["14", 0],
+      "weight": 0.5, "weight_type": "standard", "combine_embeds": "concat",
+      "start_at": 0.0, "end_at": 1.0, "embeds_scaling": "V override"
+    },
+    "class_type": "IPAdapter",
+    "_meta": { "title": "IPAdapter Apply" }
+  }
+}
