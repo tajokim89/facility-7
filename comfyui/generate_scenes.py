@@ -1,6 +1,5 @@
 import json
 import urllib.request
-import urllib.parse
 import os
 import glob
 import argparse
@@ -8,231 +7,192 @@ import random
 import shutil
 import time
 
-# ComfyUI API Address
+# ComfyUI API
 COMFYUI_URL = "http://127.0.0.1:8188"
-WORKFLOW_FILE = "comfyui/emotion.json"
+
+# Workflow files (모두 workflow/ 하위)
+WORKFLOW_SD15   = "comfyui/workflow/emotion.json"         # SD 1.5 base (fallback)
+WORKFLOW_SDXL   = "comfyui/workflow/sdxl_scene.json"      # SDXL Direct (배경/환경)
+WORKFLOW_OUTPAINT = "comfyui/workflow/sdxl_outpaint.json" # SDXL Outpaint (캐릭터/와이드)
+
+# Prompt directory — *_refs.json 파일은 generate_references.py 담당, 여기서는 제외
 PROMPT_DIR = "comfyui/prompt"
 
-# --- NEW: Paths for Auto-Copy ---
-COMFYUI_INPUT_DIR = "C:/comfyui/ComfyUI/input"
+# ComfyUI 경로
+COMFYUI_INPUT_DIR   = "C:/comfyui/ComfyUI/input"
 COMFYUI_OUTPUT_ROOT = "C:/comfyui/ComfyUI/output"
+
+# 프로젝트 출력 경로
 PROJECT_TEMP_DIR = "comfyui/images/temp"
 PROJECT_COMP_DIR = "comfyui/images/comp"
 
-# Ensure project directories exist
 os.makedirs(PROJECT_TEMP_DIR, exist_ok=True)
 os.makedirs(PROJECT_COMP_DIR, exist_ok=True)
 
-# Stable High Resolution (FHD)
-WIDTH = 1920
+WIDTH  = 1920
 HEIGHT = 1080
 
-# Aesthetic: "Clinical Photography" - Extremely high detail, realistic skin, cinematic lighting.
-REF_NEGATIVE_PROMPT = "(semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4), text, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck"
-SCENE_NEGATIVE_PROMPT = REF_NEGATIVE_PROMPT + ", close up"
 
-def prepare_style_ref(file_path):
-    """Ensures the style reference image exists in ComfyUI's input directory."""
+def prepare_ref_image(file_path):
+    """레퍼런스 이미지를 ComfyUI input 폴더로 복사하고 파일명 반환."""
     if not file_path:
         return None
-        
     file_name = os.path.basename(file_path)
     target_path = os.path.join(COMFYUI_INPUT_DIR, file_name)
-    
-    if os.path.exists(file_path) and os.path.isfile(file_path):
-        if not os.path.exists(target_path):
-            print(f"Copying {file_path} -> {target_path}")
-            shutil.copy2(file_path, target_path)
-        return file_name
-    
-    local_search_paths = [".", "comfyui", "comfyui/input"]
-    for p in local_search_paths:
-        local_path = os.path.join(p, file_path)
-        if os.path.exists(local_path) and os.path.isfile(local_path):
-            if not os.path.exists(target_path):
-                print(f"Copying local {local_path} -> {target_path}")
-                shutil.copy2(local_path, target_path)
-            return file_name
-            
-    return file_name
 
-def wait_and_copy_output(filename_prefix, scene_id):
-    """Waits for the image to be generated and copies it to the project's temp folder."""
-    # ComfyUI appends _00001, _00002 etc. to the prefix
-    search_pattern = os.path.join(COMFYUI_OUTPUT_ROOT, f"{filename_prefix}*.png")
-    print(f"Waiting for {scene_id} output...")
-    
-    timeout = 120 # 2 minutes
-    start_time = time.time()
-    while time.time() - start_time < timeout:
-        files = glob.glob(search_pattern)
+    for candidate in [file_path, os.path.join("comfyui", file_path)]:
+        if os.path.isfile(candidate):
+            if not os.path.exists(target_path):
+                print(f"  Copy ref: {candidate} -> {target_path}")
+                shutil.copy2(candidate, target_path)
+            return file_name
+
+    return file_name  # 없어도 이름만 반환 (ComfyUI에 이미 있을 수 있음)
+
+
+def wait_and_copy(filename_prefix, scene_id, timeout=120):
+    """ComfyUI output 폴더를 폴링해 생성된 이미지를 temp 폴더로 복사."""
+    pattern = os.path.join(COMFYUI_OUTPUT_ROOT, f"{filename_prefix}*.png")
+    print(f"  Waiting for [{scene_id}] output...", end="", flush=True)
+    start = time.time()
+    while time.time() - start < timeout:
+        files = glob.glob(pattern)
         if files:
-            # Sort by modification time to get the latest if multiple exist
             files.sort(key=os.path.getmtime, reverse=True)
-            latest_file = files[0]
-            target_name = f"{scene_id}_{os.path.basename(latest_file)}"
-            target_path = os.path.join(PROJECT_TEMP_DIR, target_name)
-            
-            # Small delay to ensure file is fully written
+            latest = files[0]
+            dest = os.path.join(PROJECT_TEMP_DIR, f"{scene_id}_{os.path.basename(latest)}")
             time.sleep(1)
-            shutil.copy2(latest_file, target_path)
-            print(f"Captured: {target_path}")
-            return target_path
+            shutil.copy2(latest, dest)
+            print(f" -> {dest}")
+            return dest
+        print(".", end="", flush=True)
         time.sleep(3)
-    print(f"Timeout waiting for {scene_id}")
+    print(f" TIMEOUT ({timeout}s)")
     return None
 
-def load_scenes_from_dir(directory):
-    """Loads all scenes from JSON files in the specified directory."""
-    all_scenes = []
-    json_files = glob.glob(os.path.join(directory, "*.json"))
-    
-    for file_path in json_files:
-        # Get filename without extension for output prefix
-        file_name = os.path.splitext(os.path.basename(file_path))[0]
-        try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                scenes = json.load(f)
-                if isinstance(scenes, list):
-                    for scene in scenes:
-                        scene['_source_file'] = file_name  # Store source filename
-                    all_scenes.extend(scenes)
-                else:
-                    print(f"Warning: {file_path} is not a list of scenes. Skipping.")
-        except Exception as e:
-            print(f"Error loading {file_path}: {e}")
-            
-    return all_scenes
 
-def queue_prompt(prompt_workflow):
-    p = {"prompt": prompt_workflow}
-    data = json.dumps(p).encode('utf-8')
+def load_scenes(directory):
+    """prompt/ 디렉토리에서 씬 JSON 로드. *_refs.json 파일은 건너뜀."""
+    scenes = []
+    for path in glob.glob(os.path.join(directory, "*.json")):
+        if path.endswith("_refs.json"):
+            continue  # 레퍼런스 파일은 generate_references.py 담당
+        source = os.path.splitext(os.path.basename(path))[0]
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            if not isinstance(data, list):
+                print(f"Warning: {path} is not a list, skipping.")
+                continue
+            for scene in data:
+                if scene.get("is_reference"):
+                    continue  # refs는 generate_references.py 담당
+                if scene.get("chain_from"):
+                    continue  # 체인 씬은 generate_sequence.py 담당
+                scene["_source"] = source
+            scenes.extend(data)
+        except Exception as e:
+            print(f"Error loading {path}: {e}")
+    return scenes
+
+
+def queue_prompt(workflow):
+    data = json.dumps({"prompt": workflow}).encode("utf-8")
     req = urllib.request.Request(f"{COMFYUI_URL}/prompt", data=data)
-    with urllib.request.urlopen(req) as response:
-        return json.loads(response.read().decode('utf-8'))
+    with urllib.request.urlopen(req) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def select_workflow(scene, sdxl_wf, outpaint_wf):
+    """씬 속성에 따라 적절한 워크플로우 선택."""
+    has_char   = bool(scene.get("composition_ref"))
+    use_outpaint = scene.get("use_outpaint", False)
+    if has_char or use_outpaint:
+        return json.loads(json.dumps(outpaint_wf)), "SDXL_OUTPAINT"
+    return json.loads(json.dumps(sdxl_wf)), "SDXL_DIRECT"
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Queue prompts for ComfyUI from JSON files.")
-    parser.add_argument("--fixed", action="store_true", help="Use fixed seeds from JSON instead of random seeds.")
-    parser.add_argument("--ids", nargs="+", help="Specific scene IDs to queue (e.g., S01 S02).")
-    parser.add_argument("--weight", type=float, default=0.8, help="IP-Adapter weight (default: 0.8).")
-    parser.add_argument("--weight_type", type=str, default="standard", choices=["standard", "prompt is more important", "style transfer"], help="IP-Adapter weight type (default: standard).")
-    parser.add_argument("--style_ref", type=str, default="style_reference.png", help="Default style reference image filename (Tone).")
-    parser.add_argument("--comp_ref", type=str, default="", help="Default composition reference image filename (Character/Person).")
-    parser.add_argument("--out_dir", type=str, default="facility-7", help="Subfolder in ComfyUI output directory.")
+    parser = argparse.ArgumentParser(description="ComfyUI 씬 이미지 생성기")
+    parser.add_argument("--fixed",       action="store_true", help="JSON seed 고정 사용")
+    parser.add_argument("--ids",         nargs="+",           help="생성할 씬 ID 목록 (예: S03 S08)")
+    parser.add_argument("--weight",      type=float, default=0.8, help="IP-Adapter 기본 weight")
+    parser.add_argument("--out_dir",     type=str, default="facility-7", help="ComfyUI output 하위 폴더명")
     args = parser.parse_args()
 
-    if not os.path.exists(WORKFLOW_FILE):
-        print(f"Error: {WORKFLOW_FILE} not found.")
-        return
+    # 워크플로우 로드
+    for wf_path in [WORKFLOW_SDXL, WORKFLOW_OUTPAINT]:
+        if not os.path.exists(wf_path):
+            print(f"Error: workflow not found: {wf_path}")
+            return
 
-    if not os.path.exists(PROMPT_DIR):
-        print(f"Error: Prompt directory {PROMPT_DIR} not found.")
-        return
+    with open(WORKFLOW_SDXL,    "r", encoding="utf-8") as f: sdxl_wf     = json.load(f)
+    with open(WORKFLOW_OUTPAINT,"r", encoding="utf-8") as f: outpaint_wf = json.load(f)
 
-    scenes = load_scenes_from_dir(PROMPT_DIR)
-    
+    # 씬 로드 및 필터
+    scenes = load_scenes(PROMPT_DIR)
     if args.ids:
-        scenes = [s for s in scenes if s.get('id') in args.ids]
-    
+        scenes = [s for s in scenes if s.get("id") in args.ids]
     if not scenes:
-        print("No matching scenes found.")
+        print("No scenes found.")
         return
 
-    with open(WORKFLOW_FILE, 'r', encoding='utf-8') as f:
-        base_workflow = json.load(f)
-        
-    sdxl_workflow_file = "comfyui/sdxl_scene.json"
-    if os.path.exists(sdxl_workflow_file):
-        with open(sdxl_workflow_file, 'r', encoding='utf-8') as f:
-            sdxl_workflow = json.load(f)
-    else:
-        sdxl_workflow = base_workflow
-
-    sdxl_out_file = "comfyui/sdxl_outpaint.json"
-    if os.path.exists(sdxl_out_file):
-        with open(sdxl_out_file, 'r', encoding='utf-8') as f:
-            sdxl_out_workflow = json.load(f)
-    else:
-        sdxl_out_workflow = sdxl_workflow
-
-    seed_mode = "FIXED (from JSON)" if args.fixed else "RANDOM"
-    print(f"Queueing ALL {len(scenes)} scenes from {PROMPT_DIR}")
-    print(f"Settings: FHD ({WIDTH}x{HEIGHT}), Seed Mode: {seed_mode}")
-    print(f"Output Subfolder: {args.out_dir}")
+    seed_mode = "FIXED" if args.fixed else "RANDOM"
+    print(f"=== Scene Generation ===")
+    print(f"Scenes : {len(scenes)} | Seed: {seed_mode} | out_dir: {args.out_dir}")
+    print()
 
     for i, scene in enumerate(scenes):
-        scene_id = scene.get('id', '')
-        is_ref = scene_id.startswith('REF_') or scene.get('is_reference', False)
-        # Character scenes usually have a composition_ref (face)
-        has_char = bool(scene.get('composition_ref'))
-        use_outpaint = scene.get('use_outpaint', False)
-        
-        # Prepare References
-        raw_ref = scene.get('composition_ref') or scene.get('style_ref', args.style_ref)
-        current_ref = prepare_style_ref(raw_ref)
-        
-        if is_ref:
-            workflow = json.loads(json.dumps(base_workflow)) # SD 1.5
-            if "8" in workflow:
-                workflow["8"]["inputs"]["width"] = 768
-                workflow["8"]["inputs"]["height"] = 768
-            if "15" in workflow:
-                workflow["15"]["inputs"]["weight"] = 0.0
-            print(f"Using BASE (SD 1.5) workflow for REFERENCE {scene_id}.")
-            final_neg_text = REF_NEGATIVE_PROMPT
-        elif has_char or use_outpaint:
-            workflow = json.loads(json.dumps(sdxl_out_workflow)) # SDXL Outpaint
-            mode_desc = "CHARACTER" if has_char else "OUTPAINT REQUESTED"
-            print(f"Using SDXL OUTPAINT for {mode_desc} {scene_id} (Ensuring single subject focus).")
-            final_neg_text = "text, watermark, blurry, low quality, distorted, extra limbs, bad anatomy, (multiple subjects, duplicate:1.4)"
-        else:
-            workflow = json.loads(json.dumps(sdxl_workflow)) # SDXL Direct Wide
-            print(f"Using SDXL DIRECT for SCENE {scene_id}.")
-            final_neg_text = "text, watermark, blurry, low quality, distorted, extra limbs, bad anatomy"
+        scene_id = scene.get("id", "unknown")
+        workflow, wf_type = select_workflow(scene, sdxl_wf, outpaint_wf)
 
-        # Update Prompts
-        pos_prompt = scene.get('prompt', '')
-        workflow["10"]["inputs"]["text"] = pos_prompt
-        scene_neg = scene.get('negative_prompt', '')
-        if scene_neg:
-            final_neg_text = f"{final_neg_text}, {scene_neg}"
-        workflow["9"]["inputs"]["text"] = final_neg_text
-        
-        # IP-Adapter Application
+        # 레퍼런스 이미지
+        ref_path = scene.get("composition_ref") or scene.get("style_ref", "")
+        ref_file = prepare_ref_image(ref_path)
+
+        # Negative prompt
+        neg_base = (
+            "text, watermark, blurry, low quality, distorted, extra limbs, bad anatomy, "
+            "(multiple subjects, duplicate:1.4)"
+            if (scene.get("composition_ref") or scene.get("use_outpaint"))
+            else "text, watermark, blurry, low quality, distorted, extra limbs, bad anatomy"
+        )
+        scene_neg = scene.get("negative_prompt", "")
+        final_neg = f"{neg_base}, {scene_neg}" if scene_neg else neg_base
+
+        # Prompt 주입
+        workflow["10"]["inputs"]["text"] = scene.get("prompt", "")
+        workflow["9"]["inputs"]["text"]  = final_neg
+
+        # IP-Adapter
         if "14" in workflow:
-            workflow["14"]["inputs"]["image"] = current_ref
-        
+            workflow["14"]["inputs"]["image"] = ref_file
         if "15" in workflow:
-            # High weight for characters, lower for environment style
-            workflow["15"]["inputs"]["weight"] = scene.get('weight', 0.8 if has_char else 0.5)
-        
-        # Handle Seed Logic
-        if args.fixed:
-            current_seed = scene.get('seed', 0)
-        else:
-            current_seed = random.randint(1, 1125899906842624)
-        
-        if "6" in workflow:
-            workflow["6"]["inputs"]["seed"] = current_seed
-        if "20" in workflow: # For outpaint KSampler
-            workflow["20"]["inputs"]["seed"] = current_seed + 1
+            has_char = bool(scene.get("composition_ref"))
+            workflow["15"]["inputs"]["weight"] = scene.get("weight", args.weight if has_char else 0.5)
 
-        # Update Filename Prefix (#12)
-        source_file = scene.get('_source_file', 'unknown')
+        # Seed
+        seed = scene.get("seed", 0) if args.fixed else random.randint(1, 1125899906842624)
+        if "6"  in workflow: workflow["6"]["inputs"]["seed"]  = seed
+        if "20" in workflow: workflow["20"]["inputs"]["seed"] = seed + 1
+
+        # 파일명 prefix
+        source = scene.get("_source", "unknown")
+        prefix = f"{args.out_dir}/{source}_{scene_id}_{seed}"
         if "12" in workflow:
-            workflow["12"]["inputs"]["filename_prefix"] = f"{args.out_dir}/{source_file}_{scene_id}_{current_seed}"
+            workflow["12"]["inputs"]["filename_prefix"] = prefix
+
+        weight_val = workflow.get("15", {}).get("inputs", {}).get("weight", "-")
+        print(f"[{i+1}/{len(scenes)}] {scene_id} | {wf_type} | ref={ref_file} | weight={weight_val}")
 
         try:
-            response = queue_prompt(workflow)
-            prefix = workflow["12"]["inputs"]["filename_prefix"]
-            print(f"[{i+1}/{len(scenes)}] Queued {scene_id} (Ref: {current_ref}, Weight: {workflow['15']['inputs']['weight']})")
-            # Wait and copy to project temp folder
-            wait_and_copy_output(prefix, scene_id)
+            queue_prompt(workflow)
+            wait_and_copy(prefix, scene_id)
         except Exception as e:
-            print(f"Failed to queue {scene_id}: {e}")
+            print(f"  Failed: {e}")
 
-    print(f"\nDone! All {len(scenes)} nodes are now in the ComfyUI queue.")
+    print(f"\nDone! {len(scenes)} scenes queued.")
+
 
 if __name__ == "__main__":
     main()

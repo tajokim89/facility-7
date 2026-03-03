@@ -1,23 +1,5 @@
 [
   {
-    "id": "REF_SUB_117",
-    "prompt": "A (raw photo:1.3) of a (middle-aged Korean man:1.4) with a (deeply exhausted and sorrowful face:1.3), (1man:1.6), (masculine:1.5), short salt and pepper hair. His eyes are (lost and pleading:1.4), reflecting a sense of broken humanity. He looks like a regular person who has lost all hope. (Visible skin pores:1.2), soft natural skin texture. Plain grey hospital gown, soft clinical lighting, shot on 85mm lens, f/1.8, sharp focus, 8k uhd.",
-    "negative_prompt": "woman, female, girl, lipstick, makeup, (grotesque, monster, zombie:1.5), (smooth skin, plastic skin:1.4), (cartoon, anime, 3d render:1.3), low quality, blurry",
-    "is_reference": true
-  },
-  {
-    "id": "REF_SUB_203",
-    "prompt": "A (raw photo:1.3) of a (young Korean woman in her early 20s:1.4), (1woman:1.5), wearing a simple white patient gown. Her face is a portrait of (heartbreaking vulnerability and quiet terror:1.6), (eyes glistening with tears:1.5), (quivering lips:1.3). She looks like an innocent student caught in a terrifying medical experiment. (Soft natural skin texture:1.2), (visible skin pores:1.1). High-key clinical lighting with soft shadows, shot on 85mm lens, f/1.8, sharp focus on her pleading eyes, 8k uhd.",
-    "negative_prompt": "man, male, boy, (grotesque, monster, zombie:1.5), (smile, happy, calm:1.5), (plastic skin, smooth skin:1.4), (cartoon, anime, 3d render:1.3), low quality, blurry, heavy makeup",
-    "is_reference": true
-  },
-  {
-    "id": "REF_LEE_JUN_HYEOK",
-    "prompt": "A (raw photo:1.3) of a (young Korean man:1.4), (1man:1.5), masculine, short neat dark hair, sharp jawline, wearing a crisp white medical uniform. (Cynical observant gaze:1.4), slight smirk, sharp facial features. (Visible skin pores:1.2), natural skin texture. Minimalist clinical white background, professional studio lighting, shot on 85mm lens, f/1.8, sharp focus, 8k uhd.",
-    "negative_prompt": "woman, female, girl, lipstick, long hair, (plastic skin, smooth skin:1.3), (cartoon, anime, 3d render:1.2), low quality, blurry, distorted",
-    "is_reference": true
-  },
-  {
     "id": "S01",
     "prompt": "First-person POV looking down at a hand holding a glowing futuristic tablet. A high-tech electronic device with a glowing cyan screen displaying medical data. (Extreme close up:1.4) showing (detailed skin texture of the hand:1.2), fingerprints visible. Clinical laboratory background with soft bokeh, cinematic lighting, shot on 35mm lens, f/2.8, 8k uhd.",
     "style_ref": "style_reference.png",
@@ -76,7 +58,23 @@
   {
     "id": "S15",
     "prompt": "A macro cinematic shot of medical tubes filled with (bubbling thick dark red liquid:1.3). The background is flashing with (intense red emergency lights:1.4). High-contrast visceral detail, sharp focus on the rushing liquid, motion blur, 8k uhd.",
-    "style_ref": "style_reference.png"
+    "style_ref": "style_reference.png",
+    "chain_from": "S14"
+  },
+  {
+    "id": "S15a",
+    "prompt": "A wide cinematic shot of a sterile white Sector A room. (Three hazmat-suited security personnel in white full-body suits:1.4) are entering through the door in a clinical, detached formation. (Motion blur on their movements:1.2). Cold fluorescent overhead lighting, harsh shadows, institutional violence rendered in perfect cleanliness, 8k uhd.",
+    "negative_prompt": "blood on suits, dirty, chaotic background, extra people, distorted",
+    "style_ref": "style_reference.png",
+    "chain_from": "S15"
+  },
+  {
+    "id": "S15b",
+    "prompt": "An extreme close-up of a young Korean woman's face (Subject #203) after extraction. Her eyes are (completely void of life:1.6), (pupils dilated:1.3), staring at nothing. (Greyish pale skin:1.3), (faint tear streaks:1.2) dried on her cheeks. The red liquid in the background tubes has (calmed to a dark, still, almost black pool:1.4). Cold clinical lighting, harrowing stillness, 8k uhd.",
+    "negative_prompt": "blood on face, bruises, wounds, screaming, motion",
+    "composition_ref": "images/ref/REF_SUB_203.png",
+    "weight": 0.6,
+    "chain_from": "S15"
   },
   {
     "id": "S17",
@@ -132,7 +130,8 @@
   {
     "id": "S25",
     "prompt": "A (full body cinematic shot:1.2) of an elderly Korean man (Subject #089) sitting in the futuristic white chair. (Soft pale yellow liquid:1.4) is flowing through the tubes. He has a (peaceful, vacant expression:1.3). Warm yellow clinical lighting, sterile white room, 8k uhd.",
-    "style_ref": "style_reference.png"
+    "composition_ref": "images/ref/REF_SUB_089.png",
+    "weight": 0.4
   },
   {
     "id": "S26a",

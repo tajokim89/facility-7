@@ -1,0 +1,32 @@
+[
+  {
+    "id": "REF_HAN_SE_JIN",
+    "prompt": "A (raw photo:1.3) of a (young Korean woman in her late 20s:1.4), (1woman:1.5), wearing a crisp white clinical uniform. Her face has a (perfectly neutral and unreadable expression:1.3), (dead and empty eyes:1.4), sharp features, pale skin. (Visible skin pores:1.2), natural skin texture. Minimalist clinical white background, soft high-key lighting, shot on 85mm lens, f/1.8, sharp focus, 8k uhd.",
+    "negative_prompt": "man, male, boy, (smile, happy, warm:1.4), (plastic skin, smooth skin:1.3), (cartoon, anime, 3d render:1.2), low quality, blurry, distorted, heavy makeup",
+    "is_reference": true
+  },
+  {
+    "id": "REF_LEE_JUN_HYEOK",
+    "prompt": "A (raw photo:1.3) of a (young Korean man:1.4), (1man:1.5), masculine, short neat dark hair, sharp jawline, wearing a crisp white medical uniform. (Cynical observant gaze:1.4), slight smirk, sharp facial features. (Visible skin pores:1.2), natural skin texture. Minimalist clinical white background, professional studio lighting, shot on 85mm lens, f/1.8, sharp focus, 8k uhd.",
+    "negative_prompt": "woman, female, girl, lipstick, long hair, (plastic skin, smooth skin:1.3), (cartoon, anime, 3d render:1.2), low quality, blurry, distorted",
+    "is_reference": true
+  },
+  {
+    "id": "REF_SUB_117",
+    "prompt": "A (raw photo:1.3) of a (middle-aged Korean man:1.4) with a (deeply exhausted and sorrowful face:1.3), (1man:1.6), (masculine:1.5), short salt and pepper hair. His eyes are (lost and pleading:1.4), reflecting a sense of broken humanity. He looks like a regular person who has lost all hope. (Visible skin pores:1.2), soft natural skin texture. Plain grey hospital gown, soft clinical lighting, shot on 85mm lens, f/1.8, sharp focus, 8k uhd.",
+    "negative_prompt": "woman, female, girl, lipstick, makeup, (grotesque, monster, zombie:1.5), (smooth skin, plastic skin:1.4), (cartoon, anime, 3d render:1.3), low quality, blurry",
+    "is_reference": true
+  },
+  {
+    "id": "REF_SUB_203",
+    "prompt": "A (raw photo:1.3) of a (young Korean woman in her early 20s:1.4), (1woman:1.5), wearing a simple white patient gown. Her face is a portrait of (heartbreaking vulnerability and quiet terror:1.6), (eyes glistening with tears:1.5), (quivering lips:1.3). She looks like an innocent student caught in a terrifying medical experiment. (Soft natural skin texture:1.2), (visible skin pores:1.1). High-key clinical lighting with soft shadows, shot on 85mm lens, f/1.8, sharp focus on her pleading eyes, 8k uhd.",
+    "negative_prompt": "man, male, boy, (grotesque, monster, zombie:1.5), (smile, happy, calm:1.5), (plastic skin, smooth skin:1.4), (cartoon, anime, 3d render:1.3), low quality, blurry, heavy makeup",
+    "is_reference": true
+  },
+  {
+    "id": "REF_SUB_089",
+    "prompt": "A (raw photo:1.3) of an (elderly Korean man in his 60s:1.4), (1man:1.6), wearing a simple grey hospital gown. His face shows a (peaceful, vacant expression:1.4), eyes half-closed, utterly compliant. The hollowness of a person who has given up entirely. (Visible skin pores:1.2), age lines, natural skin texture. Soft warm clinical lighting, shot on 85mm lens, f/1.8, sharp focus, 8k uhd.",
+    "negative_prompt": "woman, female, girl, (angry, scared, crying:1.3), (plastic skin, smooth skin:1.3), (cartoon, anime, 3d render:1.2), low quality, blurry",
+    "is_reference": true
+  }
+]
