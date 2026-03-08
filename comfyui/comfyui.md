@@ -1,119 +1,136 @@
 # ComfyUI 이미지 생성 시스템 문서
 
+> 최종 업데이트: 2026-03-08
+> 리팩토링 상세: `docs/refactoring.md` 참조
+
+---
+
 ## 1. 디렉토리 구조
 
 ```
 comfyui/
-├── generate_scenes.py          # 씬 이미지 생성 스크립트
-├── generate_references.py      # 캐릭터 레퍼런스 이미지 생성 스크립트
+├── generate.py              # 통합 CLI (refs / scenes / batch / review)
 │
-├── workflow/                   # ComfyUI 워크플로우 JSON (모두 여기서 관리)
-│   ├── emotion.json            # SD 1.5 base (레퍼런스 생성 fallback)
-│   ├── sd15_reference.json     # SD 1.5 레퍼런스 전용
-│   ├── sdxl_scene.json         # SDXL Direct — 배경/환경 씬
-│   ├── sdxl_outpaint.json      # SDXL Outpaint — 캐릭터/와이드샷 씬
-│   └── emotion_outpaint.json   # Outpaint 변형 워크플로우
+├── lib/                     # 공통 라이브러리
+│   ├── config.py            # 경로 상수, WORKFLOW_MAP, DEFAULT_WEIGHTS
+│   ├── schema.py            # 씬 로드, v1→v2 마이그레이션, scene_type 추론
+│   ├── comfyui_client.py    # HTTP API + WebSocket 완료 추적
+│   ├── ref_manager.py       # 레퍼런스 이미지 복사/수집
+│   ├── workflow_loader.py   # 워크플로우 로드 + 파라미터 주입
+│   ├── batch_runner.py      # 배치 실행 엔진 (위상 정렬)
+│   ├── manifest.py          # 생성 이력 추적 (manifest.json)
+│   └── quality.py           # 이미지 품질 자동 검증 (PIL)
 │
-├── prompt/                     # 프롬프트 데이터
-│   ├── chapter_01.json         # Chapter 01 씬 프롬프트 (S01~ENDING)
-│   ├── chapter_01_refs.json    # Chapter 01 캐릭터 레퍼런스 프롬프트
-│   └── intro.json              # 타이틀 화면 프롬프트 (TITLE_NORMAL, TITLE_GLITCH)
+├── workflow/                # ComfyUI 워크플로우 JSON
+│   ├── sd15_reference.json          # SD 1.5 - 캐릭터 레퍼런스 전용
+│   ├── sdxl_scene.json              # SDXL - 환경/배경/macro/special
+│   ├── sdxl_outpaint.json           # SDXL Outpaint - 캐릭터 씬 (dual-ref)
+│   └── sdxl_character_closeup.json  # SDXL - 얼굴 클로즈업 전용 (1024x1024)
 │
-├── images/                     # 생성 이미지 저장소
-│   ├── temp/                   # 1차 자동 저장 (검수 전)
-│   ├── comp/                   # 검수 완료 최종본 (수동 이동)
-│   └── ref/                    # 캐릭터 레퍼런스 최종본
-├── images_v2/                  # v2 버전 이미지
-│   ├── temp/
-│   └── ref/
+├── prompt/                  # 프롬프트 데이터 (v2 스키마)
+│   ├── chapter_01.json      # Chapter 01 씬 (scene_type 명시)
+│   ├── chapter_01_refs.json # Chapter 01 캐릭터 REF
+│   └── intro.json           # 타이틀 화면 (TITLE_NORMAL, TITLE_GLITCH)
 │
-└── achive/                     # 구버전 보관
-    ├── generate_scenes_backup.py
-    └── comfyui_prompts.txt
+├── images/
+│   ├── temp/    # 생성 직후 자동 저장 (검수 전)
+│   ├── comp/    # 검수 승인 최종본
+│   └── ref/     # 캐릭터 레퍼런스 (고정 파일명: {REF_ID}.png)
+│
+├── manifest.json            # 생성 이력 추적 DB
+├── docs/
+│   └── refactoring.md       # 리팩토링 계획 문서
+└── achive/                  # 구버전 보관 (참조용)
 ```
 
 ---
 
-## 2. 파일 역할 분리 원칙
+## 2. 실행 명령어 (통합 CLI)
 
-| 파일 | 대상 | 워크플로우 |
-|---|---|---|
-| `generate_references.py` | `prompt/*_refs.json` — `is_reference: true` 항목 | `workflow/sd15_reference.json` (SD 1.5) |
-| `generate_scenes.py` | `prompt/*.json` — `*_refs.json` 제외, 씬만 | `workflow/sdxl_scene.json` / `workflow/sdxl_outpaint.json` |
+> 반드시 프로젝트 루트 `facility-7/`에서 실행
 
-> **규칙:** 레퍼런스 프롬프트는 반드시 `*_refs.json` 파일에, 씬 프롬프트는 나머지 JSON에 작성한다.
+```bash
+# -- 레퍼런스 생성 --
+python comfyui/generate.py refs                        # 전체 REF 생성
+python comfyui/generate.py refs --ids REF_HAN_SE_JIN   # 특정 REF만
 
----
+# -- 씬 생성 --
+python comfyui/generate.py scenes --ids S03 S08        # 특정 씬
+python comfyui/generate.py scenes --type character_scene  # scene_type 필터
+python comfyui/generate.py scenes --fixed --ids S01    # seed 고정 재현
 
-## 3. 워크플로우 상세
+# -- 배치 생성 (전체 / 챕터별) --
+python comfyui/generate.py batch                       # 전체 배치
+python comfyui/generate.py batch --chapter 1           # Chapter 01만
+python comfyui/generate.py batch --variants 3          # 씬당 3가지 variant
 
-### 워크플로우 선택 로직 (`generate_scenes.py`)
-
-| 조건 | 워크플로우 | 모델 |
-|---|---|---|
-| `composition_ref` 있음 (캐릭터 씬) | `sdxl_outpaint.json` | `juggernautXL_ragnarokBy.safetensors` |
-| `use_outpaint: true` | `sdxl_outpaint.json` | `juggernautXL_ragnarokBy.safetensors` |
-| 나머지 배경/환경 씬 | `sdxl_scene.json` | `juggernautXL_ragnarokBy.safetensors` |
-
-### 레퍼런스 워크플로우 (`generate_references.py`)
-
-| 조건 | 워크플로우 | 모델 |
-|---|---|---|
-| `is_reference: true` | `sd15_reference.json` | `majicmixRealistic_v7.safetensors` |
-
-### 워크플로우 공통 노드 매핑
-
-| 노드 ID | 역할 | 스크립트에서 주입하는 값 |
-|---|---|---|
-| `"6"` | KSampler (메인) | `seed` |
-| `"8"` | EmptyLatentImage | 해상도 (1920×1080) |
-| `"9"` | CLIP Negative | `final_neg` 문자열 |
-| `"10"` | CLIP Positive | `scene["prompt"]` |
-| `"11"` | CheckpointLoader | (모델 고정, 수정 불필요) |
-| `"12"` | SaveImage | `filename_prefix` |
-| `"14"` | IPAdapter Image Input | 레퍼런스 이미지 파일명 |
-| `"15"` | IPAdapter | `weight` |
-| `"20"` | KSampler (Outpaint 2단계) | `seed + 1` |
-
-### `sd15_reference.json` 노드 매핑 (별도 구조)
-
-| 노드 ID | 역할 |
-|---|---|
-| `"1"` | Seed |
-| `"3"` | filename_prefix |
-| `"5"` | Positive 프롬프트 |
-| `"6"` | Negative 프롬프트 |
-
-### KSampler 설정 비교
-
-| 항목 | SD 1.5 (레퍼런스) | SDXL (씬) |
-|---|---|---|
-| steps | 25 | 35 |
-| cfg | 7 | 7 |
-| sampler | euler | dpmpp_2m_sde |
-| scheduler | simple | karras |
-| 해상도 | 768×768 | 1920×1080 |
+# -- 검수 --
+python comfyui/generate.py review --pending                      # 미검수 목록
+python comfyui/generate.py review --scene S03                    # S03 상태 조회
+python comfyui/generate.py review --scene S03 --accept 0         # variant 0 승인 (comp/로 복사)
+python comfyui/generate.py review --scene S03 --reject-all       # 전부 거부
+```
 
 ---
 
-## 4. 프롬프트 데이터 구조
+## 3. scene_type 시스템
 
-### 씬 오브젝트 스키마 (`chapter_01.json`, `intro.json`)
+### scene_type → 워크플로우 매핑
+
+| scene_type | 워크플로우 | 해상도 | 용도 |
+|:---|:---|:---|:---|
+| `environment` | `sdxl_scene.json` | 1920×1080 | 배경, 환경, 소품 |
+| `macro` | `sdxl_scene.json` | 1920×1080 | 오브젝트 클로즈업 |
+| `special` | `sdxl_scene.json` | 1920×1080 | 특수 씬 (타이틀 등) |
+| `character_scene` | `sdxl_outpaint.json` | 1920×1080 | 인물 포함 씬, dual-ref |
+| `character_closeup` | `sdxl_character_closeup.json` | 1024×1024 | 얼굴 클로즈업 |
+| `reference` | `sd15_reference.json` | 768×768 | 캐릭터 REF 생성 |
+
+### scene_type별 기본 IP-Adapter weight
+
+| scene_type | style_weight | composition_weight |
+|:---|:---:|:---:|
+| `environment` | 0.4 | 0.0 |
+| `macro` | 0.3 | 0.0 |
+| `special` | 0.3 | 0.0 |
+| `character_scene` | 0.3 | 0.8 |
+| `character_closeup` | 0.2 | 0.9 |
+
+---
+
+## 4. 프롬프트 스키마 (v2)
+
+### 씬 오브젝트
 
 ```json
 {
-  "id": "S01",
+  "id": "S03",
+  "scene_type": "character_scene",
   "prompt": "...",
   "negative_prompt": "...",
   "style_ref": "style_reference.png",
   "composition_ref": "images/ref/REF_HAN_SE_JIN.png",
+  "style_weight": 0.3,
+  "composition_weight": 0.8,
   "weight": 0.8,
-  "use_outpaint": true,
-  "seed": 12345
+  "priority": 3,
+  "depends_on": "S14",
+  "use_prev_output": false
 }
 ```
 
-### 레퍼런스 오브젝트 스키마 (`chapter_01_refs.json`)
+| 필드 | 설명 | 기본값 |
+|:---|:---|:---|
+| `scene_type` | 워크플로우 결정 (필수) | v1 자동 추론 |
+| `style_ref` | IP-Adapter 스타일 레퍼런스 | - |
+| `composition_ref` | IP-Adapter 구도/인물 레퍼런스 | - |
+| `style_weight` | 스타일 ref IP 강도 | scene_type 기본값 |
+| `composition_weight` | 인물 ref IP 강도 | scene_type 기본값 |
+| `priority` | 배치 실행 우선순위 (낮을수록 먼저) | 99 |
+| `depends_on` | 의존 씬 ID (해당 씬 완료 후 실행) | - |
+| `use_prev_output` | 부모 씬 출력을 ref로 체이닝 | false |
+
+### 레퍼런스 오브젝트
 
 ```json
 {
@@ -124,131 +141,123 @@ comfyui/
 }
 ```
 
-### IP-Adapter Weight 가이드
+### v1 하위호환
 
-| 상황 | weight | 비고 |
-|---|---|---|
-| 캐릭터 얼굴 고정 | 0.8 | `composition_ref` 사용 |
-| 캐릭터 느슨한 참조 | 0.4~0.5 | 포즈/환경 유연성 |
-| 소품/스타일 힌트 | 0.3 | `use_outpaint` 병용 |
-| 환경/배경만 | 0.0 | `style_ref` 또는 weight 0 |
+`scene_type` 없는 v1 JSON은 자동 추론:
+- `composition_ref` 있거나 `use_outpaint: true` → `character_scene`
+- `is_reference: true` 또는 ID가 `REF_` 시작 → `reference`
+- 나머지 → `environment`
 
 ---
 
-## 5. Chapter 01 씬 목록 및 생성 전략
+## 5. 워크플로우 노드 매핑
 
-### 레퍼런스 캐릭터 (`chapter_01_refs.json`)
+### SDXL 계열 공통 (sdxl_scene / sdxl_outpaint / sdxl_character_closeup)
+
+| 노드 | 역할 | 주입 값 |
+|:---|:---|:---|
+| `"9"` | CLIP Negative | scene_type별 기본 neg + scene.negative_prompt |
+| `"10"` | CLIP Positive | scene.prompt |
+| `"14"` | LoadImage (style ref) | style_ref 파일명 |
+| `"15"` | IPAdapter | composition_weight (character) / style_weight (기타) |
+| `"16"` | LoadImage (comp ref, outpaint만) | composition_ref 파일명 |
+| `"17"` | ImageBatch (outpaint만) | 14 + 16 결합 → 15에 전달 |
+| `"18"` | ImagePadForOutpaint | feathering=160 |
+| `"6"` | KSampler | seed |
+| `"20"` | KSampler (outpaint 2단계) | seed + 1 |
+| `"12"` | SaveImage | filename_prefix |
+
+### sd15_reference 노드
+
+| 노드 | 역할 |
+|:---|:---|
+| `"1"` | Seed |
+| `"3"` | filename_prefix |
+| `"5"` | Positive 프롬프트 |
+| `"6"` | Negative 프롬프트 |
+
+---
+
+## 6. Chapter 01 씬 목록
+
+### 레퍼런스 캐릭터
 
 | ID | 설명 |
-|---|---|
-| `REF_HAN_SE_JIN` | 한세진 (선임 관찰자, 20대 후반 여성, 무표정) |
-| `REF_LEE_JUN_HYEOK` | 이준혁 (남성 관찰자, 냉소적 반소) |
-| `REF_SUB_117` | 대상자 #117 (중년 남성, 피폐·공허한 눈) |
-| `REF_SUB_203` | 대상자 #203 (20대 여성, 공포에 질린 눈) |
-| `REF_SUB_089` | 대상자 #089 (60대 남성, 평온한 공허함) |
+|:---|:---|
+| `REF_HAN_SE_JIN` | 한세진 (선임 관찰자, 20대 후반 여성) |
+| `REF_LEE_JUN_HYEOK` | 이준혁 (남성 관찰자, 냉소적) |
+| `REF_SUB_117` | 대상자 #117 (중년 남성, 공허한 눈) |
+| `REF_SUB_203` | 대상자 #203 (20대 여성, 공포) |
+| `REF_SUB_089` | 대상자 #089 (60대 남성, 평온한 공허) |
 
-### 씬 생성 계획 (`chapter_01.json`)
+### 씬 목록
 
-| 씬 ID | 주요 내용 | 생성 | 레퍼런스 | 워크플로우 |
-|:---|:---|:---:|:---|:---|
-| **S01** | 태블릿 POV, 의료 데이터 화면 | O | style_ref (w=0.0) | SDXL Direct |
-| **S02** | 엘리베이터 B9, 폐쇄공포 | O | style_ref | SDXL Direct |
-| **S03** | 한세진 첫 등장, 무한 복도 | O | `comp: REF_HAN_SE_JIN` (w=0.8) | SDXL Outpaint |
-| S04~S05 | 구역/규칙 설명 (대사 위주) | X | S03 재사용 | — |
-| **S06** | 텅 빈 로커룸, PROCESSED 라벨 | O | style_ref | SDXL Direct |
-| **S07** | A구역, 빈 의자+투명관 | O | style_ref | SDXL Direct |
-| **S08** | A구역의 한세진, 태블릿 소지 | O | `comp: REF_HAN_SE_JIN` (w=0.8) | SDXL Outpaint |
-| **S09** | 대상자 #117, 추출 의자 착석 | O | `comp: REF_SUB_117` (w=0.4) | SDXL Outpaint |
-| **S10** | 투명관 흐르는 회색 액체 | O | style_ref | SDXL Direct |
-| S11~13 | 대상자 대화 및 퇴장 | X | S10 재사용 | — |
-| **S14** | 대상자 #203, 붉은 액체 공포 | O | `comp: REF_SUB_203` (w=0.5) | SDXL Outpaint |
-| **S15** | 비상 알림, 끓는 붉은 액체 | O | style_ref | SDXL Direct |
-| **S17** | 휴게실, 무표정 관찰자들 | O | style_ref | SDXL Outpaint |
-| **S18** | 이준혁 등장 | O | `comp: REF_LEE_JUN_HYEOK` (w=0.8) | SDXL Outpaint |
-| **S19** | 자판기 컵, 회색 액체 | O | style_ref (w=0.3) | SDXL Outpaint |
-| **S20** | PA 스피커 클로즈업 | O | style_ref | SDXL Direct |
-| **S21** | B구역 입구, 유리 장치들 | O | style_ref | SDXL Direct |
-| **S22** | B구역 은빛 액체 | O | style_ref | SDXL Direct |
-| **S23** | 복도 구역 표지판 | O | style_ref | SDXL Direct |
-| **S24** | G구역 금속 문 | O | style_ref | SDXL Direct |
-| **S24b** | 거울의 방 (G구역 내부) | O | style_ref | SDXL Direct |
-| **S25** | 대상자 #089, 노란 액체 | O | `comp: REF_SUB_089` (w=0.4) | SDXL Outpaint |
-| **S26a** | 글리치 태블릿 화면 | O | style_ref | SDXL Direct |
-| **ENDING_A** | 시설 밖 외로운 뒷모습 | O | style_ref | SDXL Direct |
-| **ENDING_B** | 어두운 방의 태블릿 | O | style_ref | SDXL Direct |
-| **ENDING_C** | 거울 속 얼굴, #042 글리치 | O | style_ref | SDXL Direct |
-| **ENDING_D** | 검은 태블릿 화면 | O | style_ref | SDXL Direct |
+| 씬 ID | scene_type | 레퍼런스 | priority | 의존성 |
+|:---|:---|:---|:---:|:---|
+| S01 | environment | style_ref (w=0.0) | 5 | - |
+| S02 | environment | style_ref | 5 | - |
+| S03 | character_scene | REF_HAN_SE_JIN (cw=0.8) | 3 | - |
+| S06 | environment | style_ref | 5 | - |
+| S07 | environment | style_ref | 5 | - |
+| S08 | character_scene | REF_HAN_SE_JIN (cw=0.8) | 3 | - |
+| S09 | character_scene | REF_SUB_117 (cw=0.4) | 3 | - |
+| S10 | macro | style_ref | 5 | - |
+| S14 | character_scene | REF_SUB_203 (cw=0.5) | 2 | - |
+| S15 | environment | style_ref | 4 | S14 |
+| S15a | environment | style_ref | 4 | S15 |
+| S15b | character_closeup | REF_SUB_203 (cw=0.9) | 3 | S15 |
+| S17 | character_scene | style_ref (outpaint) | 4 | - |
+| S18 | character_scene | REF_LEE_JUN_HYEOK (cw=0.8) | 3 | - |
+| S19 | macro | style_ref (outpaint) | 5 | - |
+| S20~S24b | environment | style_ref | 5 | - |
+| S25 | character_scene | REF_SUB_089 (cw=0.4) | 3 | - |
+| S26a | environment | style_ref | 5 | - |
+| ENDING_A~D | environment | style_ref | 6 | - |
 
-### 타이틀 화면 (`intro.json`)
+### 타이틀 화면
 
-| ID | 설명 | 워크플로우 |
-|---|---|---|
-| `TITLE_NORMAL` | 경비실 데스크, 정상 상태 | SDXL Outpaint |
-| `TITLE_GLITCH` | 동일 구도, 글리치/공포 버전 | SDXL Outpaint |
+| ID | scene_type | 설명 |
+|:---|:---|:---|
+| TITLE_NORMAL | special | 경비실 데스크, 정상 상태 |
+| TITLE_GLITCH | special | 동일 구도, 글리치/공포 버전 |
 
 ---
 
-## 6. 실행 명령어
+## 7. 검수 흐름
 
-```bash
-# 프로젝트 루트(facility-7/)에서 실행
-
-# --- 씬 생성 ---
-python comfyui/generate_scenes.py                      # 전체 씬 (랜덤 seed)
-python comfyui/generate_scenes.py --ids S03 S08        # 특정 씬만
-python comfyui/generate_scenes.py --fixed --ids S01    # seed 고정 재현
-python comfyui/generate_scenes.py --ids S03 --weight 0.9  # weight 조정
-
-# --- 레퍼런스 생성 ---
-python comfyui/generate_references.py                  # 모든 *_refs.json 처리
+```
+generate.py batch
+      |
+      v
+images/temp/   <- 자동 저장 + manifest.json 기록 (status=pending)
+      |
+      v
+generate.py review --pending   <- 미검수 목록 확인
+      |
+      +-- --accept N  --> images/comp/{scene_id}.png (status=accepted)
+      +-- --reject-all            (status=rejected)
 ```
 
 ---
 
-## 7. Negative Prompt 전략
-
-### 씬 유형별 기본값 (자동 적용)
-
-| 씬 유형 | Negative Prompt |
-|---|---|
-| 캐릭터 씬 / Outpaint | `text, watermark, blurry, low quality, distorted, extra limbs, bad anatomy, (multiple subjects, duplicate:1.4)` |
-| 배경/환경 씬 | `text, watermark, blurry, low quality, distorted, extra limbs, bad anatomy` |
-| SD 1.5 레퍼런스 | `(low quality, worst quality:1.4), text, watermark, blurry, distorted, extra limbs, bad anatomy, (cartoon, anime, 3d, render:1.3)` |
-
-> JSON의 `"negative_prompt"` 값은 위 기본값 **뒤에 추가**됨.
-
----
-
-## 8. 이미지 파일 관리
-
-### 파일명 패턴
+## 8. 배치 실행 순서 (우선순위 + 의존성)
 
 ```
-# temp 폴더 (generate_scenes.py 자동 저장)
-{scene_id}_{out_dir}/{source}_{scene_id}_{seed}_00001_.png
-예: S03_facility-7/chapter_01_S03_348076396875676_00001_.png
-
-# ref 폴더 (generate_references.py 자동 저장)
-{ref_id}.png
-예: REF_HAN_SE_JIN.png
-```
-
-### 검수 흐름
-
-```
-생성 완료 → images/temp/  (자동)
-     ↓ 검수 통과
-           → images/comp/  (수동 이동)
-
-레퍼런스   → images/ref/   (자동, 고정 파일명 덮어쓰기)
+Phase 1 (priority=1): special     - TITLE_NORMAL, TITLE_GLITCH
+Phase 2 (priority=2): character   - S14 (REF_SUB_203, 의존성 루트)
+Phase 3 (priority=3): character   - S03, S08, S09, S15b, S18, S25
+Phase 4 (priority=4): environment - S15, S15a, S17 (의존성 후순위)
+Phase 5 (priority=5): environment/macro - 나머지 배경씬
+Phase 6 (priority=6): environment - ENDING_A~D
 ```
 
 ---
 
 ## 9. 주의사항
 
-- **ComfyUI 서버**: `http://127.0.0.1:8188` 실행 필요
-- **실행 위치**: 반드시 프로젝트 루트 `facility-7/`에서 실행
-- **레퍼런스 이미지**: `C:/comfyui/ComfyUI/input/`에 자동 복사됨 (경로 고정)
-- **폴링 타임아웃**: 씬 120초, 레퍼런스 60초
-- **새 챕터 추가 시**: `prompt/chapter_02.json` (씬) + `prompt/chapter_02_refs.json` (레퍼런스) 형태로 생성하면 자동 인식
+- ComfyUI 서버: `http://127.0.0.1:8188` 실행 필요
+- WebSocket 자동 완료 추적 → 연결 실패 시 폴링 fallback (5초 간격)
+- 레퍼런스 이미지: `C:/comfyui/ComfyUI/input/`에 자동 복사
+- REF 저장: `images/ref/{REF_ID}.png` 고정명 (덮어쓰기)
+- 새 챕터 추가: `prompt/chapter_02.json` + `prompt/chapter_02_refs.json` 형태로 생성 시 자동 인식
+- `sdxl_character_closeup.json`은 1024×1024 출력 - 게임에서 레터박싱 처리 필요

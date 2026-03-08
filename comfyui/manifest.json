@@ -1,0 +1,68 @@
+{
+  "S03": {
+    "variants": [
+      {
+        "idx": 0,
+        "seed": 541633541615805,
+        "path": "C:\\Users\\tajok\\dev\\facility-7\\comfyui\\images\\temp\\S03_chapter_01_S03_541633541615805_00001_.png",
+        "workflow": "character_scene",
+        "status": "pending"
+      }
+    ]
+  },
+  "S08": {
+    "variants": [
+      {
+        "idx": 0,
+        "seed": 729574151719193,
+        "path": "C:\\Users\\tajok\\dev\\facility-7\\comfyui\\images\\temp\\S08_chapter_01_S08_729574151719193_00001_.png",
+        "workflow": "character_scene",
+        "status": "pending"
+      }
+    ]
+  },
+  "S09": {
+    "variants": [
+      {
+        "idx": 0,
+        "seed": 723097016475659,
+        "path": "C:\\Users\\tajok\\dev\\facility-7\\comfyui\\images\\temp\\S09_chapter_01_S09_723097016475659_00001_.png",
+        "workflow": "character_scene",
+        "status": "pending"
+      }
+    ]
+  },
+  "S14": {
+    "variants": [
+      {
+        "idx": 0,
+        "seed": 741675086351737,
+        "path": "C:\\Users\\tajok\\dev\\facility-7\\comfyui\\images\\temp\\S14_chapter_01_S14_741675086351737_00001_.png",
+        "workflow": "character_scene",
+        "status": "pending"
+      }
+    ]
+  },
+  "S15b": {
+    "variants": [
+      {
+        "idx": 0,
+        "seed": 786165401087522,
+        "path": "C:\\Users\\tajok\\dev\\facility-7\\comfyui\\images\\temp\\S15b_chapter_01_S15b_786165401087522_00001_.png",
+        "workflow": "character_scene",
+        "status": "pending"
+      }
+    ]
+  },
+  "S18": {
+    "variants": [
+      {
+        "idx": 0,
+        "seed": 531131579434482,
+        "path": "C:\\Users\\tajok\\dev\\facility-7\\comfyui\\images\\temp\\S18_chapter_01_S18_531131579434482_00001_.png",
+        "workflow": "character_scene",
+        "status": "pending"
+      }
+    ]
+  }
+}

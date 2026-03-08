@@ -29,20 +29,30 @@
   "14": {
     "inputs": { "image": "style_reference.png", "upload": "image" },
     "class_type": "LoadImage",
-    "_meta": { "title": "Load Image (Style/Ref)" }
+    "_meta": { "title": "Load Image (Style Ref)" }
+  },
+  "16": {
+    "inputs": { "image": "style_reference.png", "upload": "image" },
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load Image (Composition - Character)" }
+  },
+  "17": {
+    "inputs": { "image1": ["14", 0], "image2": ["16", 0] },
+    "class_type": "ImageBatch",
+    "_meta": { "title": "Image Batch (Combine Refs)" }
   },
   "15": {
     "inputs": {
-      "model": ["13", 0], "ipadapter": ["13", 1], "image": ["14", 0],
+      "model": ["13", 0], "ipadapter": ["13", 1], "image": ["17", 0],
       "weight": 0.8, "weight_type": "standard", "combine_embeds": "concat",
       "start_at": 0.0, "end_at": 1.0, "embeds_scaling": "V override"
     },
     "class_type": "IPAdapter",
-    "_meta": { "title": "IPAdapter Apply" }
+    "_meta": { "title": "IPAdapter Apply (Dual Ref)" }
   },
   "18": {
     "inputs": {
-      "left": 448, "top": 28, "right": 448, "bottom": 28, "feathering": 128,
+      "left": 448, "top": 28, "right": 448, "bottom": 28, "feathering": 160,
       "image": ["5", 0]
     },
     "class_type": "ImagePadForOutpaint",

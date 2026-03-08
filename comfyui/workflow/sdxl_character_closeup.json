@@ -1,0 +1,43 @@
+{
+  "5": {
+    "inputs": { "samples": ["6", 0], "vae": ["11", 2] },
+    "class_type": "VAEDecode",
+    "_meta": { "title": "VAE Decode" }
+  },
+  "6": {
+    "inputs": {
+      "seed": 0, "steps": 40, "cfg": 7, "sampler_name": "dpmpp_2m_sde", "scheduler": "karras", "denoise": 1,
+      "model": ["15", 0], "positive": ["10", 0], "negative": ["9", 0], "latent_image": ["8", 0]
+    },
+    "class_type": "KSampler",
+    "_meta": { "title": "KSampler (Face Detail)" }
+  },
+  "8": { "inputs": { "width": 1024, "height": 1024, "batch_size": 1 }, "class_type": "EmptyLatentImage", "_meta": { "title": "Empty Latent Image (1:1 Face)" } },
+  "9": { "inputs": { "text": "naked, nude, bare skin, text, watermark, blurry, low quality, distorted, extra limbs, bad anatomy, deformed face, (multiple people, duplicate:1.4), ugly, asymmetrical face", "clip": ["11", 1] }, "class_type": "CLIPTextEncode", "_meta": { "title": "CLIP Text Encode (Negative)" } },
+  "10": { "inputs": { "text": "", "clip": ["11", 1] }, "class_type": "CLIPTextEncode", "_meta": { "title": "CLIP Text Encode (Positive)" } },
+  "11": {
+    "inputs": { "ckpt_name": "juggernautXL_ragnarokBy.safetensors" },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": { "title": "Load Checkpoint (SDXL)" }
+  },
+  "12": { "inputs": { "filename_prefix": "sdxl_closeup_", "images": ["5", 0] }, "class_type": "SaveImage", "_meta": { "title": "Save Image" } },
+  "13": {
+    "inputs": { "model": ["11", 0], "preset": "STANDARD (medium strength)", "ipadapter_name": "ip-adapter-plus-face_sdxl_vit-h.safetensors" },
+    "class_type": "IPAdapterUnifiedLoader",
+    "_meta": { "title": "IPAdapter Unified Loader (Face SDXL)" }
+  },
+  "14": {
+    "inputs": { "image": "style_reference.png", "upload": "image" },
+    "class_type": "LoadImage",
+    "_meta": { "title": "Load Image (Character Face Ref)" }
+  },
+  "15": {
+    "inputs": {
+      "model": ["13", 0], "ipadapter": ["13", 1], "image": ["14", 0],
+      "weight": 0.9, "weight_type": "standard", "combine_embeds": "concat",
+      "start_at": 0.0, "end_at": 1.0, "embeds_scaling": "V override"
+    },
+    "class_type": "IPAdapter",
+    "_meta": { "title": "IPAdapter Apply (Face)" }
+  }
+}
