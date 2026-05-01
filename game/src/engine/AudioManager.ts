@@ -19,6 +19,17 @@ export class AudioManager {
   private currentMaster: GainNode | null = null;
   private currentTrack: string | null = null;
 
+  // mp3 기반 앰비언트 (Suno 생성 트랙)
+  private playthrough = 1;
+  private mp3Cache = new Map<string, { el: HTMLAudioElement; gain: GainNode }>();
+  private currentMp3: { el: HTMLAudioElement; gain: GainNode } | null = null;
+
+  // ─── 마스터 볼륨 ─────────────────────────────────────────────
+  private bgmMaster: GainNode | null = null;
+  private sfxMaster: GainNode | null = null;
+  private bgmVolume = 0.7;
+  private sfxVolume = 0.8;
+
   // ─── 레지스트리 ──────────────────────────────────────────────
   private trackRegistry = new Map<string, TrackBuilder>();
   private soundRegistry = new Map<string, SoundPlayer>();
@@ -56,35 +67,125 @@ export class AudioManager {
     this.ctx?.resume();
   }
 
+  /** 현재 회차 주입 — 2회차 이상이면 자동으로 `_p2` 트랙을 재생 */
+  setPlaythrough(n: number): void {
+    this.playthrough = n;
+  }
+
+  /** BGM 마스터 게인 노드 (lazy 생성). 모든 앰비언트는 이 노드를 거침. */
+  private getBgmMaster(): GainNode {
+    if (!this.bgmMaster) {
+      const ctx = this.getCtx();
+      this.bgmMaster = ctx.createGain();
+      this.bgmMaster.gain.value = this.bgmVolume;
+      this.bgmMaster.connect(ctx.destination);
+    }
+    return this.bgmMaster;
+  }
+
+  /** SFX 마스터 게인 노드 (lazy 생성). 모든 효과음은 이 노드를 거침. */
+  private getSfxMaster(): GainNode {
+    if (!this.sfxMaster) {
+      const ctx = this.getCtx();
+      this.sfxMaster = ctx.createGain();
+      this.sfxMaster.gain.value = this.sfxVolume;
+      this.sfxMaster.connect(ctx.destination);
+    }
+    return this.sfxMaster;
+  }
+
+  /** BGM 볼륨 설정 (0.0 ~ 1.0) */
+  setBgmVolume(v: number): void {
+    this.bgmVolume = Math.max(0, Math.min(1, v));
+    if (this.bgmMaster) this.bgmMaster.gain.value = this.bgmVolume;
+  }
+
+  /** SFX 볼륨 설정 (0.0 ~ 1.0) */
+  setSfxVolume(v: number): void {
+    this.sfxVolume = Math.max(0, Math.min(1, v));
+    if (this.sfxMaster) this.sfxMaster.gain.value = this.sfxVolume;
+  }
+
+  getBgmVolume(): number { return this.bgmVolume; }
+  getSfxVolume(): number { return this.sfxVolume; }
+
   // ─── 배경 앰비언트 ───────────────────────────────────────────
 
-  /** 앰비언트 트랙 전환 (crossfade) */
+  /**
+   * 앰비언트 트랙 전환 (crossfade).
+   * `_p2` 변형이 있을 경우 회차에 따라 자동 선택.
+   * mp3 파일 재생을 우선 시도하고, 실패하면 절차 생성 트랙으로 fallback.
+   */
   playAmbient(track: string, fadeDuration = 1): void {
-    if (this.currentTrack === track) return;
-    this.currentTrack = track;
+    const fileId = this.playthrough >= 2 ? `${track}_p2` : track;
+    if (this.currentTrack === fileId) return;
+    this.currentTrack = fileId;
+
+    this.fadeOutProcedural(fadeDuration);
+    this.fadeOutMp3(fadeDuration);
+
+    const entry = this.getOrCreateMp3(fileId);
+    if (!entry) {
+      this.playProcedural(track, fadeDuration);
+      return;
+    }
 
     const ctx = this.getCtx();
     const now = ctx.currentTime;
+    entry.gain.gain.cancelScheduledValues(now);
+    entry.gain.gain.setValueAtTime(0, now);
+    entry.gain.gain.linearRampToValueAtTime(1, now + fadeDuration);
 
-    // 기존 레이어 fadeout 후 정리
-    const oldMaster = this.currentMaster;
-    const oldLayers = [...this.currentLayers];
-    if (oldMaster) {
-      oldMaster.gain.linearRampToValueAtTime(0, now + fadeDuration);
-      setTimeout(() => {
-        oldLayers.forEach(l => {
-          try { l.osc.stop(); } catch { /* already stopped */ }
-          try { l.lfo?.stop(); } catch { /* already stopped */ }
-        });
-        oldMaster.disconnect();
-      }, (fadeDuration + 0.1) * 1000);
+    entry.el.currentTime = 0;
+    entry.el.play().then(() => {
+      this.currentMp3 = entry;
+    }).catch((err) => {
+      console.warn(`[AudioManager] mp3 play failed for "${fileId}", falling back to procedural:`, err);
+      this.playProcedural(track, fadeDuration);
+    });
+  }
+
+  /** 앰비언트 정지 */
+  stopAmbient(fadeDuration = 1): void {
+    this.fadeOutProcedural(fadeDuration);
+    this.fadeOutMp3(fadeDuration);
+    this.currentTrack = null;
+  }
+
+  /** mp3 element와 게인 노드 lazy 생성 (BGM 마스터를 거쳐 출력). 실패 시 null. */
+  private getOrCreateMp3(fileId: string): { el: HTMLAudioElement; gain: GainNode } | null {
+    const cached = this.mp3Cache.get(fileId);
+    if (cached) return cached;
+
+    try {
+      const ctx = this.getCtx();
+      const el = new Audio(`/audio/${fileId}.mp3`);
+      el.loop = true;
+      el.preload = 'auto';
+
+      const source = ctx.createMediaElementSource(el);
+      const gain = ctx.createGain();
+      gain.gain.value = 0;
+      source.connect(gain);
+      gain.connect(this.getBgmMaster());
+
+      const entry = { el, gain };
+      this.mp3Cache.set(fileId, entry);
+      return entry;
+    } catch (err) {
+      console.warn(`[AudioManager] failed to init mp3 source for "${fileId}":`, err);
+      return null;
     }
+  }
 
-    // 새 마스터 gain (fadein)
+  /** 절차 생성 트랙 시작 (fallback) */
+  private playProcedural(track: string, fadeDuration: number): void {
+    const ctx = this.getCtx();
+    const now = ctx.currentTime;
     const master = ctx.createGain();
     master.gain.setValueAtTime(0, now);
     master.gain.linearRampToValueAtTime(1, now + fadeDuration);
-    master.connect(ctx.destination);
+    master.connect(this.getBgmMaster());
 
     const layers = this.buildTrack(track, ctx);
     layers.forEach(l => {
@@ -98,24 +199,38 @@ export class AudioManager {
     this.currentLayers = layers;
   }
 
-  /** 앰비언트 정지 */
-  stopAmbient(fadeDuration = 1): void {
+  private fadeOutProcedural(fadeDuration: number): void {
     if (!this.currentMaster) return;
     const ctx = this.getCtx();
     const now = ctx.currentTime;
-    this.currentMaster.gain.linearRampToValueAtTime(0, now + fadeDuration);
-    const oldLayers = [...this.currentLayers];
     const oldMaster = this.currentMaster;
+    const oldLayers = [...this.currentLayers];
+    oldMaster.gain.cancelScheduledValues(now);
+    oldMaster.gain.setValueAtTime(oldMaster.gain.value, now);
+    oldMaster.gain.linearRampToValueAtTime(0, now + fadeDuration);
     setTimeout(() => {
       oldLayers.forEach(l => {
-        try { l.osc.stop(); } catch { /* */ }
-        try { l.lfo?.stop(); } catch { /* */ }
+        try { l.osc.stop(); } catch { /* already stopped */ }
+        try { l.lfo?.stop(); } catch { /* already stopped */ }
       });
       oldMaster.disconnect();
     }, (fadeDuration + 0.1) * 1000);
     this.currentMaster = null;
     this.currentLayers = [];
-    this.currentTrack = null;
+  }
+
+  private fadeOutMp3(fadeDuration: number): void {
+    if (!this.currentMp3) return;
+    const ctx = this.getCtx();
+    const now = ctx.currentTime;
+    const old = this.currentMp3;
+    old.gain.gain.cancelScheduledValues(now);
+    old.gain.gain.setValueAtTime(old.gain.gain.value, now);
+    old.gain.gain.linearRampToValueAtTime(0, now + fadeDuration);
+    setTimeout(() => {
+      try { old.el.pause(); } catch { /* */ }
+    }, (fadeDuration + 0.1) * 1000);
+    this.currentMp3 = null;
   }
 
   private buildTrack(track: string, ctx: AudioContext): AmbientLayer[] {
@@ -146,7 +261,7 @@ export class AudioManager {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
-    gain.connect(ctx.destination);
+    gain.connect(this.getSfxMaster());
     osc.type = 'sine';
     osc.frequency.setValueAtTime(880, now);
     osc.frequency.exponentialRampToValueAtTime(440, now + 0.06);
@@ -164,7 +279,7 @@ export class AudioManager {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
-    gain.connect(ctx.destination);
+    gain.connect(this.getSfxMaster());
     osc.type = 'sine';
     osc.frequency.setValueAtTime(330, now);
     osc.frequency.exponentialRampToValueAtTime(220, now + 0.12);
@@ -198,7 +313,7 @@ export class AudioManager {
     noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
     noise.connect(noiseFilter);
     noiseFilter.connect(noiseGain);
-    noiseGain.connect(ctx.destination);
+    noiseGain.connect(this.getSfxMaster());
     noise.start(now);
 
     const thud = ctx.createOscillator();
@@ -210,7 +325,7 @@ export class AudioManager {
     thudGain.gain.linearRampToValueAtTime(0.22, now + 0.47);
     thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
     thud.connect(thudGain);
-    thudGain.connect(ctx.destination);
+    thudGain.connect(this.getSfxMaster());
     thud.start(now + 0.45);
     thud.stop(now + 0.72);
 
@@ -228,7 +343,7 @@ export class AudioManager {
     hissGain.gain.value = 0.12;
     hiss.connect(hissFilter);
     hissFilter.connect(hissGain);
-    hissGain.connect(ctx.destination);
+    hissGain.connect(this.getSfxMaster());
     hiss.start(now + 0.05);
   }
 

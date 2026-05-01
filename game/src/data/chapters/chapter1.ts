@@ -4,6 +4,13 @@ const chapter1: ChapterData = {
   id: 'chapter1',
   title: '첫 출근',
   startNode: 'S01',
+  gameOverNode: 'ending_empty',
+  endings: {
+    ending_a: { label: 'ENDING A — 괜찮은 직장' },
+    ending_b: { label: 'ENDING B — 무언가 이상한' },
+    ending_c: { label: 'ENDING C — 거울' },
+    ending_d: { label: 'ENDING D — 공허' },
+  },
   nodes: [
     // === ACT 1: 도착 ===
     {
@@ -15,6 +22,7 @@ const chapter1: ChapterData = {
         minPlaythrough: 2,
         appendText: '\n\n화면 하단에 "잔여 감정: 측정 중..."이라는 문구가 0.5초간 깜빡이다 사라졌다.',
         effect: 'glitch',
+        bgImage: '/images/chapter1/S01_2nd.png',
       }],
     },
     {
@@ -25,6 +33,7 @@ const chapter1: ChapterData = {
       overrides: [{
         minPlaythrough: 2,
         appendText: '\n\n층수 표시 옆으로, "S-042"라는 코드가 겹쳐 보인 것 같았다.',
+        bgImage: '/images/chapter1/S02_2nd.png',
       }],
     },
     {
@@ -65,6 +74,7 @@ const chapter1: ChapterData = {
         minPlaythrough: 2,
         appendText: '\n\n비어 있는 로커 하나에 작은 라벨이 붙어 있었다.\n「관찰자 #041 — 처리 완료」',
         effect: 'colorShift',
+        bgImage: '/images/chapter1/S06_2nd.png',
       }],
     },
     {
@@ -101,6 +111,7 @@ const chapter1: ChapterData = {
       overrides: [{
         minPlaythrough: 2,
         appendText: '\n\n...액체의 색이 유니폼 안쪽 안감과 같은 색이라는 걸 알아차렸다.',
+        bgImage: '/images/chapter1/S10_2nd.png',
       }],
     },
     {
@@ -169,7 +180,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S15',
-      bgImage: '/images/chapter1/S14_ALERT.png',
+      ambient: 'sector_a_panic',
       text: '추출이 시작되자 대상자가 비명을 질렀다.\n관 속 액체가 탁한 빨강으로 변한다. 끓어오르듯 기포가 인다.\n\n태블릿: 「경고 — 감정 유형: 원한 / 농도: 위험 / 비상 프로토콜 권장」',
       choices: [
         {
@@ -187,11 +198,15 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S15a',
+      bgImage: '/images/chapter1/S15a.png',
+      ambient: 'sector_a',
       text: '보안팀이 투입되었다. 대상자가 진정제와 함께 처리된다.\n\n한서진이 고개를 끄덕였다. "잘했어요. 프로토콜대로."',
       next: 'S17',
     },
     {
       id: 'S15b',
+      bgImage: '/images/chapter1/S15b.png',
+      ambient: 'sector_a',
       text: '비명이 서서히 잦아들었다. 빨간 액체가 차분하게 가라앉는다.\n\n대상자의 눈에서 빛이 사라졌다.',
       next: 'S17',
       overrides: [{
@@ -211,6 +226,7 @@ const chapter1: ChapterData = {
       overrides: [{
         minPlaythrough: 2,
         appendText: '\n\n...전원이 같은 표정을 하고 있었다. 무표정. 정확히 같은 무표정.',
+        bgImage: '/images/chapter1/S17_2nd.png',
       }],
     },
     {
@@ -263,6 +279,7 @@ const chapter1: ChapterData = {
       overrides: [{
         minPlaythrough: 2,
         appendText: '\n\n......회색이었다. 아까 본 권태의 액체와 같은 색.',
+        bgImage: '/images/chapter1/S19_2nd.png',
       }],
     },
     {
@@ -279,6 +296,7 @@ const chapter1: ChapterData = {
     // === ACT 4: 오후 ===
     {
       id: 'S21',
+      bgImage: '/images/chapter1/S21.png',
       speaker: '한서진',
       text: '오후엔 B구역 견학이에요. 정밀 추출실.\n\n기초 추출이랑은 좀 달라요. 더 섬세하고... 더 아름다워요.',
       next: 'S22',
@@ -287,6 +305,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S22',
+      bgImage: '/images/chapter1/S22.png',
       text: 'B구역. 정밀 추출이 진행 중이었다.\n\n관에서 흘러나오는 은빛 액체. "그리움의 잔향"이라고 한서진이 말했다.\n\n빛을 받으면 미세하게 반짝였다.',
       next: 'S23',
       overrides: [{
@@ -296,16 +315,20 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S23',
+      bgImage: '/images/chapter1/S23.png',
       text: 'B구역에서 돌아오는 복도.\n\n벽에 붙은 표지판. A구역, B구역, C구역... 그리고 F구역, G구역 방향 화살표.',
       next: 'S24',
       ambient: 'corridor',
       overrides: [{
         minPlaythrough: 2,
         appendText: '\n\nF구역 방향에서 희미한 비명 같은 소리가 들렸다. 아닌가... 환청일 수도.',
+        bgImage: '/images/chapter1/S23_2nd.png',
+        ambient: 'corridor_f_scream',
       }],
     },
     {
       id: 'S24',
+      bgImage: '/images/chapter1/S24.png',
       text: '복도 끝에 금지 표시가 된 통로가 보인다.\n「G구역 — 인가자 외 출입 금지」',
       choices: [
         {
@@ -322,6 +345,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S24b',
+      bgImage: '/images/chapter1/S24b.png',
       text: '발걸음을 멈추고 통로 안쪽을 살짝 들여다봤다.\n\n거울. 사방이 거울이었다. 거울의 방.\n안쪽에 누군가 앉아 있는 것 같았지만... 확실하지 않다.',
       next: 'S25',
       effect: 'shake',
@@ -331,12 +355,15 @@ const chapter1: ChapterData = {
         minPlaythrough: 2,
         text: '발걸음을 멈추고 통로 안쪽을 살짝 들여다봤다.\n\n거울. 사방이 거울이었다. 거울의 방.\n\n안쪽에 앉아 있는 사람이 보였다.\n관찰자 유니폼을 입고 있었다.',
         effect: 'glitch',
+        bgImage: '/images/chapter1/S24b_2nd.png',
+        ambient: 'g_sector_climax',
       }],
     },
     {
       id: 'S25',
       text: '오후 마지막 대상자. 노인. 번호 #089.\n\n안도를 추출했다. 연노란색 액체가 부드럽게 빛났다.',
       next: 'S26_check',
+      ambient: 'sector_a',
       overrides: [{
         minPlaythrough: 2,
         appendText: '\n\n추출이 끝나자 노인이 중얼거렸다.\n"고마워요... 이제 아무것도 안 느껴져요."',
@@ -387,6 +414,7 @@ const chapter1: ChapterData = {
     {
       id: 'S28',
       text: '엘리베이터가 올라간다.\n\n하루가 끝났다.',
+      ambient: 'facility',
       next: 'S29',
     },
     {
@@ -430,6 +458,7 @@ const chapter1: ChapterData = {
       id: 'ending_normal',
       text: '첫날치고 나쁘지 않았다.\n\n이상한 곳이긴 하지만, 일은 단순하고 급여는 괜찮다.\n\n내일도 출근이다.',
       endingId: 'ending_a',
+      ambient: 'ending_normal',
       next: null,
       overrides: [{
         minPlaythrough: 2,
@@ -443,6 +472,7 @@ const chapter1: ChapterData = {
       id: 'ending_uneasy',
       text: '집으로 돌아가는 길.\n\n막연한 불안감이 가시지 않았다.\n오늘 뭔가 이상했다. 하지만 뭐가 이상한지 모르겠다.\n\n......태블릿의 잔여 감정 수치가, 아침보다 줄어 있었다.',
       endingId: 'ending_b',
+      ambient: 'ending_b',
       next: null,
       overrides: [{
         minPlaythrough: 2,
@@ -456,6 +486,7 @@ const chapter1: ChapterData = {
       id: 'ending_mirror',
       text: '엘리베이터 안. 문이 닫히기 직전, 거울에 비친 자신의 얼굴이 보였다.\n\n......낯설었다.\n\n나는... 언제부터 이런 표정을 하고 있었지?',
       endingId: 'ending_c',
+      ambient: 'ending_mirror',
       next: null,
       effect: 'shake',
       overrides: [{
@@ -470,6 +501,7 @@ const chapter1: ChapterData = {
       id: 'ending_empty',
       text: '......\n\n아무것도 느껴지지 않는다.\n\n태블릿에 알림이 떴다.\n「관찰자 자격 재심사 대상으로 분류되었습니다.」\n\n태블릿이 꺼졌다.',
       endingId: 'ending_d',
+      ambient: 'ending_d',
       next: null,
       effect: 'fade',
       overrides: [{

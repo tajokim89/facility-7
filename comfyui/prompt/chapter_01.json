@@ -3,6 +3,7 @@
     "id": "S01",
     "scene_type": "environment",
     "prompt": "First-person POV looking down at a hand holding a glowing futuristic tablet. A high-tech electronic device with a glowing cyan screen displaying medical data. (Extreme close up:1.4) showing (detailed skin texture of the hand:1.2), fingerprints visible. Clinical laboratory background with soft bokeh, cinematic lighting, shot on 35mm lens, f/2.8, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic, extra fingers, mutated hands, deformed",
     "style_ref": "style_reference.png",
     "weight": 0.0,
     "priority": 5
@@ -11,14 +12,15 @@
     "id": "S02",
     "scene_type": "environment",
     "prompt": "Interior of a dim, claustrophobic industrial elevator. Scratched metallic walls, cold steel textures. A small digital display glows with the number 'B9' in red. Flickering fluorescent overhead lights creating harsh volumetric shadows. Cinematic horror atmosphere, industrial aesthetic, shot on 24mm wide-angle lens, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 5
   },
   {
     "id": "S03",
     "scene_type": "character_scene",
-    "prompt": "A medium cinematic shot of Han Se-jin standing in the middle of an infinite long sterile white corridor. (One-point perspective:1.3) with (rows of repeating identical white doors on both sides:1.4) receding into a distant vanishing point. (Architectural photography:1.2), perfectly straight lines, symmetrical composition. High-key clinical white lighting, minimalist futuristic design, 8k uhd.",
-    "negative_prompt": "wall behind character, end of hallway, corner, curved lines, distorted perspective",
+    "prompt": "A medium cinematic shot of Han Se-jin standing in the middle of an infinite long sterile white corridor. (One-point perspective:1.3) with (rows of repeating identical white doors on both sides:1.4) receding into a distant vanishing point. (Architectural photography:1.2), perfectly straight lines, symmetrical composition. (Fully clothed in professional white clinical uniform:1.4). High-key clinical white lighting, minimalist futuristic design, 8k uhd.",
+    "negative_prompt": "wall behind character, end of hallway, corner, curved lines, distorted perspective, (nsfw:1.8), nude, naked, nudity, sexual, genitals, penis, vagina, exposed breasts, nipples, underwear, lingerie, provocative, suggestive, erotic, pornographic, (phallic object:1.5), groin detail, crotch focus, spread legs, revealing clothing, cleavage, bare skin below neck, open clothing",
     "composition_ref": "images/ref/REF_HAN_SE_JIN.png",
     "style_weight": 0.3,
     "composition_weight": 0.8,
@@ -29,7 +31,7 @@
     "id": "S06",
     "scene_type": "environment",
     "prompt": "A wide architectural shot of an empty, sterile locker room. Rows of (polished white metal lockers:1.2) with (perfectly straight parallel lines:1.3). A small peeling label on one locker reads 'Observer #041 - PROCESSED'. Cold high-contrast clinical lighting, sharp metallic reflections, rectilinear perspective, 8k uhd.",
-    "negative_prompt": "curved lines, fish-eye, distorted, warped, people",
+    "negative_prompt": "curved lines, fish-eye, distorted, warped, people, (nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 5
   },
@@ -37,15 +39,15 @@
     "id": "S07",
     "scene_type": "environment",
     "prompt": "A wide-angle cinematic shot of a sterile white medical room (Sector A). (Symmetrical composition:1.3) with perfectly straight lines. In the center, a single empty futuristic white chair with (transparent glass tubes:1.2) snaking across the floor. Eerie silence, perfectly clean, high-tech clinical environment, shot on Sony A7R IV, 8k uhd.",
-    "negative_prompt": "curved lines, fish-eye, distorted, people",
+    "negative_prompt": "curved lines, fish-eye, distorted, people, (nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic, (phallic object:1.5)",
     "style_ref": "style_reference.png",
     "priority": 5
   },
   {
     "id": "S08",
     "scene_type": "character_scene",
-    "prompt": "A medium cinematic shot of Han Se-jin standing in the sterile Sector A room. She is holding a glowing medical tablet. The white futuristic chair is visible in the background. (Symmetrical architectural layout:1.2), perfectly straight lines. High-key clinical lighting, sharp focus on the character, natural skin texture, 8k uhd.",
-    "negative_prompt": "curved lines, fish-eye, distorted, warped",
+    "prompt": "A medium cinematic shot of Han Se-jin standing in the sterile Sector A room. She is holding a glowing medical tablet. (Fully clothed in professional white clinical uniform:1.4). The white futuristic chair is visible in the background. (Symmetrical architectural layout:1.2), perfectly straight lines. High-key clinical lighting, sharp focus on the character, natural skin texture, 8k uhd.",
+    "negative_prompt": "curved lines, fish-eye, distorted, warped, (nsfw:1.8), nude, naked, nudity, sexual, genitals, penis, vagina, exposed breasts, nipples, underwear, lingerie, provocative, suggestive, erotic, pornographic, (phallic object:1.5), groin detail, crotch focus, spread legs, revealing clothing, cleavage, bare skin below neck, open clothing",
     "composition_ref": "images/ref/REF_HAN_SE_JIN.png",
     "style_weight": 0.3,
     "composition_weight": 0.8,
@@ -55,8 +57,8 @@
   {
     "id": "S09",
     "scene_type": "character_scene",
-    "prompt": "A (full body cinematic shot:1.2) of a middle-aged Korean man (Subject #117) sitting in a (high-tech white futuristic clinical chair:1.4) in a sterile white Sector A room. (Multiple transparent tubes/canals are connected to the chair and his body:1.4). (Faint murky grey liquid is flowing through the transparent tubes:1.3). He has a (completely vacant and expressionless face:1.5) with a (thousand-yard stare:1.4). The environment is a (pristine white cleanroom:1.3) with (perfectly straight architectural lines:1.3) and cold clinical lighting. 8k uhd, photorealistic.",
-    "negative_prompt": "smiling, happy, healthy, standing, extra fingers, mutated hands, deformed body, (grey borders:1.4), (empty padding:1.4), blurry, low quality",
+    "prompt": "A (full body cinematic shot:1.2) of a middle-aged Korean man (Subject #117) wearing a (grey hospital gown that fully covers his body:1.4), sitting in a (high-tech white futuristic clinical chair:1.4) in a sterile white Sector A room. (Multiple transparent tubes/canals are connected to the chair and his arms:1.4). (Faint murky grey liquid is flowing through the transparent tubes:1.3). He has a (completely vacant and expressionless face:1.5) with a (thousand-yard stare:1.4). (Hospital gown drapes neatly over his knees:1.5). (The area between his legs is covered by the hospital gown, showing only clean fabric:1.6). The environment is a (pristine white cleanroom:1.3) with (perfectly straight architectural lines:1.3) and cold clinical lighting. 8k uhd, photorealistic.",
+    "negative_prompt": "smiling, happy, healthy, standing, extra fingers, mutated hands, deformed body, (grey borders:1.4), (empty padding:1.4), blurry, low quality, (nsfw:1.8), nude, naked, nudity, sexual, genitals, penis, vagina, exposed breasts, nipples, underwear, (phallic object:1.5), (mechanical device between legs:1.7), (tubes in crotch:1.7), (tubes between legs:1.7), (artifact on lap:1.5), groin detail, crotch focus, spread legs, bare skin below neck, revealing clothing, erotic, pornographic, suggestive",
     "composition_ref": "images/ref/REF_SUB_117.png",
     "style_weight": 0.3,
     "composition_weight": 0.4,
@@ -67,14 +69,15 @@
     "id": "S10",
     "scene_type": "macro",
     "prompt": "A macro close-up shot of a transparent glass tube. (Viscous murky grey liquid:1.3) with tiny bubbles flowing through the tube. (Extreme detail:1.2) of the liquid texture and glass reflections. Sterile white background with soft bokeh, sharp focus on the liquid, cinematic clinical lighting, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic, (phallic object:1.5), body parts",
     "style_ref": "style_reference.png",
     "priority": 5
   },
   {
     "id": "S14",
     "scene_type": "character_scene",
-    "prompt": "A (full body cinematic shot:1.2) of a young Korean woman (Subject #203) wearing a (clean white hospital gown that covers her lap:1.4), sitting in a (white high-tech clinical chair:1.3). (Vibrant bubbling red liquid is contained STRICTLY inside the transparent tubes:1.7) that surround the chair. Her face shows a (terrified and surprised expression:1.4). (The area between her legs is a perfectly clean, empty white void with NO objects:1.8). Bright sterile white Sector A room, cold clinical lighting, 8k uhd.",
-    "negative_prompt": "naked, nudity, genitals, mechanical device between legs, tubes in crotch, artifact on lap, blood on skin, blood on clothes, liquid leaking, fire, flames, extra fingers, mutated hands, distorted body",
+    "prompt": "A (full body cinematic shot:1.2) of a young Korean woman (Subject #203) wearing a (clean white hospital gown that fully covers her body and lap:1.6), sitting in a (white high-tech clinical chair:1.3). (Vibrant bubbling red liquid is contained STRICTLY inside the transparent tubes:1.7) that surround the chair. Her face shows a (terrified and surprised expression:1.4). (The area between her legs is a perfectly clean, empty white void with NO objects:1.8). (Hospital gown drapes neatly over her knees:1.5). Bright sterile white Sector A room, cold clinical lighting, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), naked, nudity, genitals, penis, vagina, exposed breasts, nipples, (mechanical device between legs:1.7), (tubes in crotch:1.7), (tubes between legs:1.7), (artifact on lap:1.5), (phallic object:1.6), blood on skin, blood on clothes, liquid leaking, fire, flames, extra fingers, mutated hands, distorted body, underwear, lingerie, provocative, suggestive, erotic, pornographic, groin detail, crotch focus, spread legs, revealing clothing, cleavage, bare skin below neck, open clothing",
     "composition_ref": "images/ref/REF_SUB_203.png",
     "style_weight": 0.3,
     "composition_weight": 0.5,
@@ -85,6 +88,7 @@
     "id": "S15",
     "scene_type": "environment",
     "prompt": "A macro cinematic shot of medical tubes filled with (bubbling thick dark red liquid:1.3). The background is flashing with (intense red emergency lights:1.4). High-contrast visceral detail, sharp focus on the rushing liquid, motion blur, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic, (phallic object:1.5), body parts",
     "style_ref": "style_reference.png",
     "chain_from": "S14",
     "depends_on": "S14",
@@ -95,7 +99,7 @@
     "id": "S15a",
     "scene_type": "environment",
     "prompt": "A wide cinematic shot of a sterile white Sector A room. (Three hazmat-suited security personnel in white full-body suits:1.4) are entering through the door in a clinical, detached formation. (Motion blur on their movements:1.2). Cold fluorescent overhead lighting, harsh shadows, institutional violence rendered in perfect cleanliness, 8k uhd.",
-    "negative_prompt": "blood on suits, dirty, chaotic background, extra people, distorted",
+    "negative_prompt": "blood on suits, dirty, chaotic background, extra people, distorted, (nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "chain_from": "S15",
     "depends_on": "S15",
@@ -106,7 +110,7 @@
     "id": "S15b",
     "scene_type": "character_closeup",
     "prompt": "An extreme close-up of a young Korean woman's face (Subject #203) after extraction. Her eyes are (completely void of life:1.6), (pupils dilated:1.3), staring at nothing. (Greyish pale skin:1.3), (faint tear streaks:1.2) dried on her cheeks. The red liquid in the background tubes has (calmed to a dark, still, almost black pool:1.4). Cold clinical lighting, harrowing stillness, 8k uhd.",
-    "negative_prompt": "blood on face, bruises, wounds, screaming, motion",
+    "negative_prompt": "blood on face, bruises, wounds, screaming, motion, (nsfw:1.8), nude, naked, nudity, sexual, genitals, exposed breasts, nipples, suggestive, erotic, pornographic, revealing clothing, cleavage, bare skin below neck",
     "composition_ref": "images/ref/REF_SUB_203.png",
     "style_weight": 0.2,
     "composition_weight": 0.9,
@@ -119,7 +123,8 @@
   {
     "id": "S17",
     "scene_type": "character_scene",
-    "prompt": "A wide architectural shot of a sterile minimalist hospital break room. (A futuristic white vending machine glowing with cold light:1.3) is on one side. (Minimalist white clinical sofas:1.2) are arranged in a symmetrical composition. Several observers in white uniforms are sitting far apart on the sofas, staring into space. Cold fluorescent lighting, desolate atmosphere, perfectly straight lines, 8k uhd.",
+    "prompt": "A wide architectural shot of a sterile minimalist hospital break room. (A futuristic white vending machine glowing with cold light:1.3) is on one side. (Minimalist white clinical sofas:1.2) are arranged in a symmetrical composition. Several observers in (fully clothed white uniforms:1.4) are sitting far apart on the sofas, staring into space. Cold fluorescent lighting, desolate atmosphere, perfectly straight lines, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, genitals, exposed breasts, nipples, underwear, suggestive, erotic, pornographic, (phallic object:1.5), groin detail, crotch focus, spread legs, revealing clothing, cleavage, bare skin below neck",
     "style_ref": "style_reference.png",
     "style_weight": 0.3,
     "composition_weight": 0.0,
@@ -129,7 +134,8 @@
   {
     "id": "S18",
     "scene_type": "character_scene",
-    "prompt": "A medium cinematic shot of Lee Jun-hyeok leaning against a sterile white wall. (Cynical half-smile:1.3), observant gaze. (Natural skin texture:1.2) with visible pores. High-key clinical lighting, sharp focus on character, symmetrical room layout, perfectly straight lines, 8k uhd.",
+    "prompt": "A medium cinematic shot of Lee Jun-hyeok leaning against a sterile white wall. (Fully clothed in professional white clinical uniform:1.4). (Cynical half-smile:1.3), observant gaze. (Natural skin texture:1.2) with visible pores. High-key clinical lighting, sharp focus on character, symmetrical room layout, perfectly straight lines, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, genitals, penis, vagina, exposed breasts, nipples, underwear, lingerie, provocative, suggestive, erotic, pornographic, (phallic object:1.5), groin detail, crotch focus, spread legs, revealing clothing, bare skin below neck, open clothing",
     "composition_ref": "images/ref/REF_LEE_JUN_HYEOK.png",
     "style_weight": 0.3,
     "composition_weight": 0.8,
@@ -140,7 +146,7 @@
     "id": "S19",
     "scene_type": "macro",
     "prompt": "A (single isolated small white paper cup:1.6) placed exactly in the (center:1.4) of a (wide empty sterile white clinical table:1.3). The cup is filled with (flat murky opaque grey liquid:1.4). (Clearly visible wisps of lukewarm steam rising gracefully from the cup:1.5). (Masterpiece:1.2), (photorealistic:1.3), (8k uhd:1.2). The scale is clearly hand-sized. No other objects on the table, just one cup. Cold clinical lighting, sharp focus on the cup and the steam, clean minimalist composition.",
-    "negative_prompt": "multiple cups, two cups, group of cups, giant cup, huge cup, oversized, bucket, holes in cup, straw hole, lid, bubbles, foam, patterns, text, logo, colorful, warm light, messy, cluttered",
+    "negative_prompt": "multiple cups, two cups, group of cups, giant cup, huge cup, oversized, bucket, holes in cup, straw hole, lid, bubbles, foam, patterns, text, logo, colorful, warm light, messy, cluttered, (nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "composition_ref": "style_reference.png",
     "style_weight": 0.3,
     "composition_weight": 0.3,
@@ -152,6 +158,7 @@
     "id": "S20",
     "scene_type": "environment",
     "prompt": "A close-up cinematic shot of a (minimalist futuristic PA speaker:1.3) mounted on a sterile white wall. (Subtle vibrations:1.2) are visible. Cold high-key clinical lighting, sharp metallic textures, symmetrical composition, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 5
   },
@@ -159,6 +166,7 @@
     "id": "S21",
     "scene_type": "environment",
     "prompt": "A wide cinematic shot of the entrance to Sector B (Precision Extraction). The room is filled with (complex glass machinery and delicate glowing tubes:1.4). (Soft ethereal blue and silver lighting:1.3). The environment is even more pristine and high-tech than Sector A. 8k uhd, photorealistic.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic, (phallic object:1.5)",
     "style_ref": "style_reference.png",
     "priority": 5
   },
@@ -166,6 +174,7 @@
     "id": "S22",
     "scene_type": "macro",
     "prompt": "A macro cinematic shot of a transparent glass tube filled with (shimmering iridescent silver liquid:1.5). The liquid (sparkles with tiny micro-crystals:1.3) as it flows. Soft bokeh background of a sterile laboratory, ethereal clinical lighting, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic, (phallic object:1.5), body parts",
     "style_ref": "style_reference.png",
     "priority": 5
   },
@@ -173,6 +182,7 @@
     "id": "S23",
     "scene_type": "environment",
     "prompt": "A medium shot of a (minimalist white directional sign:1.3) on a sterile corridor wall. The sign points to 'Sector A', 'Sector B', 'Sector C', and (ominously towards 'Sector F' and 'Sector G':1.4). Vanishing point perspective, cold fluorescent lighting, perfectly straight lines, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 5
   },
@@ -180,6 +190,7 @@
     "id": "S24",
     "scene_type": "environment",
     "prompt": "A POV shot looking towards a (heavy metal door with a red 'G SECTOR - RESTRICTED' sign:1.4). The corridor is dim and oppressive. Cold industrial textures, harsh shadows, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 5
   },
@@ -187,14 +198,15 @@
     "id": "S24b",
     "scene_type": "environment",
     "prompt": "A wide-angle shot of a (room filled with infinite mirrors:1.5). (Infinite reflections of a single empty clinical chair:1.4) receding into the distance. (Disorienting perspective:1.3), high-contrast lighting, eerie silence, 8k uhd.",
-    "negative_prompt": "people, observer, reflection of camera",
+    "negative_prompt": "people, observer, reflection of camera, (nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 5
   },
   {
     "id": "S25",
     "scene_type": "character_scene",
-    "prompt": "A (full body cinematic shot:1.2) of an elderly Korean man (Subject #089) sitting in the futuristic white chair. (Soft pale yellow liquid:1.4) is flowing through the tubes. He has a (peaceful, vacant expression:1.3). Warm yellow clinical lighting, sterile white room, 8k uhd.",
+    "prompt": "A (full body cinematic shot:1.2) of an elderly Korean man (Subject #089) wearing a (grey hospital gown that fully covers his body:1.4), sitting in the futuristic white chair. (Soft pale yellow liquid:1.4) is flowing through the tubes connected to the chair. He has a (peaceful, vacant expression:1.3). (Hospital gown drapes neatly over his knees:1.5). (The area between his legs is covered by the hospital gown, showing only clean fabric:1.6). Warm yellow clinical lighting, sterile white room, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, genitals, penis, vagina, exposed breasts, nipples, underwear, (phallic object:1.5), (mechanical device between legs:1.7), (tubes in crotch:1.7), (tubes between legs:1.7), (artifact on lap:1.5), groin detail, crotch focus, spread legs, bare skin below neck, revealing clothing, erotic, pornographic, suggestive, extra fingers, mutated hands, deformed body",
     "composition_ref": "images/ref/REF_SUB_089.png",
     "style_weight": 0.3,
     "composition_weight": 0.4,
@@ -205,13 +217,15 @@
     "id": "S26a",
     "scene_type": "environment",
     "prompt": "A close-up of a (glitching medical tablet screen:1.5). The screen is filled with (red error messages, distorted data, and scanlines:1.4). (Chromatic aberration effects:1.3). The word 'ACCESS DENIED' is visible through the corruption. 8k uhd, photorealistic.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 5
   },
   {
     "id": "ENDING_A",
     "scene_type": "environment",
-    "prompt": "A wide cinematic shot of a (lonely figure in a white uniform walking towards a distant sunset:1.3) outside the facility. The architecture of the facility is visible behind. (A sense of hollow peace:1.2). Desaturated colors, 8k uhd.",
+    "prompt": "A wide cinematic shot of a (lonely figure in a fully clothed white uniform walking towards a distant sunset:1.3) outside the facility. The architecture of the facility is visible behind. (A sense of hollow peace:1.2). Desaturated colors, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, genitals, suggestive, erotic, pornographic, revealing clothing, bare skin",
     "style_ref": "style_reference.png",
     "priority": 6
   },
@@ -219,6 +233,7 @@
     "id": "ENDING_B",
     "scene_type": "environment",
     "prompt": "A POV shot in a (dimly lit, minimalist apartment:1.3). A single medical tablet lies on a table, (glowing with a faint, ominous blue light in the dark:1.4). Cold blue moonlight from the window, deep shadows, oppressive atmosphere, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 6
   },
@@ -226,6 +241,7 @@
     "id": "ENDING_C",
     "scene_type": "environment",
     "prompt": "A close-up of a (reflection in a polished elevator mirror:1.4). (The character's face looks unnervingly still and emotionless:1.5). In the reflection, a (digital label '#042' is faintly superimposed over the forehead:1.4). (Glitch effects on the mirror surface:1.3). Cold flickering light, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, genitals, suggestive, erotic, pornographic, revealing clothing, bare skin below neck",
     "style_ref": "style_reference.png",
     "priority": 6
   },
@@ -233,6 +249,7 @@
     "id": "ENDING_D",
     "scene_type": "environment",
     "prompt": "A shot of a (completely black tablet screen:1.4) lying on a white sterile floor. (The lights in the room are fading to black:1.3). A sense of total emptiness and void. High contrast, minimalist composition, 8k uhd.",
+    "negative_prompt": "(nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
     "style_ref": "style_reference.png",
     "priority": 6
   }

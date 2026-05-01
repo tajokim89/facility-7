@@ -4,6 +4,10 @@ import type {
   Choice,
   GlobalState,
   SaveState,
+  SavePreview,
+  SaveSlotId,
+  SaveSlot,
+  SettingsState,
   BacklogEntry,
   PlaythroughOverride,
 } from '../data/schema';
@@ -22,6 +26,7 @@ export class GameEngine {
   private globalState: GlobalState;
   private currentPlaythrough: number;
   private saveManager: SaveManager;
+  private gameOverNode: string | null = null;
 
   constructor() {
     this.saveManager = new SaveManager();
@@ -32,11 +37,15 @@ export class GameEngine {
   /** 챕터 로드 */
   loadChapter(chapter: ChapterData): void {
     this.chapter = chapter;
+    this.gameOverNode = chapter.gameOverNode ?? null;
     this.nodeMap.clear();
     for (const node of chapter.nodes) {
       this.nodeMap.set(node.id, node);
     }
   }
+
+  /** 현재 챕터 반환 */
+  getChapter(): ChapterData | null { return this.chapter; }
 
   /** 새 게임 시작 */
   startNewGame(): SceneNode | null {
@@ -80,7 +89,7 @@ export class GameEngine {
       this.remainingEmotion = Math.max(0, Math.min(100, this.remainingEmotion));
     }
 
-    // 백로그 추가 (빈 텍스트 라우팅 노드는 제외)
+    // 백로그 추가 + 읽은 노드 마킹 (빈 텍스트 라우팅 노드는 제외)
     const resolvedText = this.resolveText(node);
     if (resolvedText) {
       this.backlog.push({
@@ -88,18 +97,39 @@ export class GameEngine {
         speaker: node.speaker,
         text: resolvedText,
       });
+      this.markNodeRead(node.id);
     }
 
     return node;
+  }
+
+  /** 노드를 읽은 것으로 마킹 (스킵 모드 가드용). chapter별로 분리 저장. */
+  private markNodeRead(nodeId: string): void {
+    if (!this.chapter) return;
+    const chapterId = this.chapter.id;
+    if (!this.globalState.readNodes) this.globalState.readNodes = {};
+    if (!this.globalState.readNodes[chapterId]) this.globalState.readNodes[chapterId] = [];
+    const arr = this.globalState.readNodes[chapterId];
+    if (!arr.includes(nodeId)) {
+      arr.push(nodeId);
+      this.saveManager.saveGlobal(this.globalState);
+    }
+  }
+
+  /** 현재 챕터에서 해당 노드를 이전에 읽었는지 */
+  isNodeRead(nodeId: string): boolean {
+    if (!this.chapter) return false;
+    const arr = this.globalState.readNodes?.[this.chapter.id];
+    return arr?.includes(nodeId) ?? false;
   }
 
   /** 다음 노드로 진행 (선택지 없는 경우) */
   advance(): SceneNode | null {
     if (!this.currentNode?.next) return null;
 
-    // 잔여감정 0 → 강제 게임오버
-    if (this.remainingEmotion <= 0) {
-      return this.goToNode('ending_empty');
+    // 잔여감정 0 → 강제 게임오버 (챕터에 gameOverNode 정의 필요)
+    if (this.remainingEmotion <= 0 && this.gameOverNode) {
+      return this.goToNode(this.gameOverNode);
     }
 
     return this.goToNode(this.currentNode.next);
@@ -125,9 +155,9 @@ export class GameEngine {
       this.remainingEmotion = Math.max(0, Math.min(100, this.remainingEmotion));
     }
 
-    // 잔여감정 0 → 강제 게임오버
-    if (this.remainingEmotion <= 0) {
-      return this.goToNode('ending_empty');
+    // 잔여감정 0 → 강제 게임오버 (챕터에 gameOverNode 정의 필요)
+    if (this.remainingEmotion <= 0 && this.gameOverNode) {
+      return this.goToNode(this.gameOverNode);
     }
 
     return this.goToNode(choice.next);
@@ -163,6 +193,18 @@ export class GameEngine {
   resolveBgImage(node: SceneNode): string | undefined {
     const override = this.findActiveOverride(node);
     return override?.bgImage ?? node.bgImage;
+  }
+
+  /** 현재 노드의 앰비언트 트랙 해석 (override 우선) */
+  resolveAmbient(node: SceneNode): string | undefined {
+    const override = this.findActiveOverride(node);
+    return override?.ambient ?? node.ambient;
+  }
+
+  /** 현재 노드의 효과음 해석 (override 우선) */
+  resolveSound(node: SceneNode): string | undefined {
+    const override = this.findActiveOverride(node);
+    return override?.sound ?? node.sound;
   }
 
   /** 활성 오버라이드 찾기 */
@@ -203,10 +245,19 @@ export class GameEngine {
     this.saveManager.saveGlobal(this.globalState);
   }
 
-  /** 현재 상태를 세이브 */
-  save(): void {
-    if (!this.currentNode || !this.chapter) return;
-    const saveState: SaveState = {
+  /** 현재 상태로 SaveState 빌드 (preview 포함) */
+  private buildSaveState(): SaveState | null {
+    if (!this.currentNode || !this.chapter) return null;
+    const text = this.resolveText(this.currentNode);
+    const speaker = this.resolveSpeaker(this.currentNode);
+    const bgImage = this.resolveBgImage(this.currentNode);
+    const preview: SavePreview = {
+      chapterTitle: this.chapter.title,
+      snippet: text.replace(/\n/g, ' ').slice(0, 80),
+      bgImage,
+      speaker,
+    };
+    return {
       version: 1,
       currentNodeId: this.currentNode.id,
       chapterId: this.chapter.id,
@@ -215,23 +266,62 @@ export class GameEngine {
       currentPlaythrough: this.currentPlaythrough,
       backlog: [...this.backlog],
       savedAt: new Date().toISOString(),
+      preview,
     };
-    this.saveManager.saveCurrent(saveState);
   }
 
-  /** 세이브 로드 */
+  /** 자동저장 (매 노드 진행 시) */
+  save(): void {
+    const state = this.buildSaveState();
+    if (state) this.saveManager.saveCurrent(state);
+  }
+
+  /** 자동저장 슬롯 로드 */
   load(): SaveState | null {
     return this.saveManager.loadCurrent();
   }
 
-  /** 세이브 존재 여부 */
+  /** 자동저장 슬롯 존재 여부 */
   hasSave(): boolean {
     return this.saveManager.loadCurrent() !== null;
   }
 
-  /** 현재 세이브 삭제 (엔딩 도달 시) */
+  /** 자동저장 슬롯 삭제 (엔딩 도달 시) */
   clearSave(): void {
     this.saveManager.deleteCurrent();
+  }
+
+  /** 특정 슬롯에 명시 저장 */
+  saveToSlot(id: SaveSlotId): boolean {
+    const state = this.buildSaveState();
+    if (!state) return false;
+    this.saveManager.saveSlot(id, state);
+    return true;
+  }
+
+  /** 특정 슬롯에서 로드 */
+  loadFromSlot(id: SaveSlotId): SaveState | null {
+    return this.saveManager.loadSlot(id);
+  }
+
+  /** 특정 슬롯 삭제 */
+  deleteSlot(id: SaveSlotId): void {
+    this.saveManager.deleteSlot(id);
+  }
+
+  /** 모든 슬롯 메타 (UI 표시용) */
+  listSlots(): SaveSlot[] {
+    return this.saveManager.listSlots();
+  }
+
+  /** 사용자 설정 로드 */
+  loadSettings(): SettingsState {
+    return this.saveManager.loadSettings();
+  }
+
+  /** 사용자 설정 저장 */
+  saveSettings(state: SettingsState): void {
+    this.saveManager.saveSettings(state);
   }
 
   // Getters

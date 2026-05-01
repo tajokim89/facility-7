@@ -1,0 +1,229 @@
+.slot-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.slot-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  width: 100%;
+  max-width: 920px;
+  max-height: 90vh;
+  overflow-y: auto;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.slot-panel h2 {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--text-speaker);
+  text-align: center;
+}
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.slot-card {
+  background: var(--bg-color);
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-primary);
+  transition: all 0.2s;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+}
+
+.slot-card:hover:not(:disabled) {
+  border-color: var(--text-speaker);
+  background: rgba(51, 68, 85, 0.1);
+}
+
+.slot-card.slot-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.slot-card.slot-empty {
+  background: transparent;
+}
+
+.slot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.slot-id {
+  font-family: monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--text-speaker);
+}
+
+.slot-delete {
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 0.4rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.slot-delete:hover {
+  color: var(--danger);
+}
+
+.slot-empty-label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-family: monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+}
+
+.slot-preview {
+  display: flex;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.slot-thumb {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+
+.slot-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.75rem;
+  min-width: 0;
+}
+
+.slot-chapter {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+}
+
+.slot-speaker {
+  color: var(--text-speaker);
+  font-size: 0.7rem;
+}
+
+.slot-snippet {
+  color: var(--text-narration);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-style: italic;
+}
+
+.slot-date {
+  color: var(--text-dim);
+  font-family: monospace;
+  font-size: 0.65rem;
+  margin-top: auto;
+}
+
+.slot-close {
+  display: block;
+  margin: 0 auto;
+  padding: 0.6rem 2.5rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  transition: all 0.2s;
+}
+
+.slot-close:hover {
+  border-color: var(--text-speaker);
+  color: var(--text-speaker);
+}
+
+/* 확인 다이얼로그 */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-dialog {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  padding: 1.5rem 2rem;
+  min-width: 300px;
+  max-width: 420px;
+  text-align: center;
+}
+
+.confirm-message {
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.confirm-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+
+.confirm-btn:hover {
+  border-color: var(--text-speaker);
+  color: var(--text-speaker);
+}
+
+.confirm-cancel:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}

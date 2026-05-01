@@ -21,11 +21,9 @@ pip install Pillow            # 품질 자동 검증 (권장)
 ## 기본 구조
 
 ```
-python comfyui/generate.py [공통 옵션] <서브커맨드> [서브커맨드 옵션]
-```
-
+python comfyui/generate.py [공통 옵션] <서브커맨드> [서브커맨드 옵션
 **공통 옵션** (모든 서브커맨드에 적용):
-
+```
 | 옵션 | 기본값 | 설명 |
 |:---|:---|:---|
 | `--fixed` | off | JSON에 지정된 seed 고정 사용 (재현용) |

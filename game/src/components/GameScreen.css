@@ -29,12 +29,18 @@
   z-index: 0;
 }
 
-/* 텍스트 가독성 오버레이 */
+/* 텍스트 가독성 오버레이 — 상단은 거의 투명, 하단만 살짝 어둡게 (대사창 위) */
 .scene-bg-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.1) 55%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
   z-index: 1;
+  pointer-events: none;
 }
 
 /* 툴바 */
@@ -62,6 +68,45 @@
 .toolbar-btn:hover {
   border-color: var(--text-speaker);
   color: var(--text-primary);
+}
+
+.toolbar-btn-active {
+  border-color: var(--text-speaker);
+  color: var(--text-speaker);
+  background: rgba(136, 170, 204, 0.08);
+}
+
+/* SKIP / AUTO 모드 인디케이터 (우상단) */
+.mode-indicator {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.mode-badge {
+  font-family: monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid currentColor;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+.mode-skip {
+  color: var(--emotion-mid);
+}
+
+.mode-auto {
+  color: var(--text-speaker);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 /* 엔딩 화면 */

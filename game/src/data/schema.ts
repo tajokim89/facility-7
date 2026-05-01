@@ -32,6 +32,10 @@ export interface PlaythroughOverride {
   effect?: EffectType;
   /** 이 오버라이드에서 표시할 배경 이미지 경로 (public/ 기준) */
   bgImage?: string;
+  /** 이 오버라이드에서 전환할 앰비언트 트랙 ID */
+  ambient?: AmbientTrack;
+  /** 이 오버라이드에서 재생할 효과음 ID */
+  sound?: SoundId;
 }
 
 /** 선택지 표시 조건 */
@@ -90,6 +94,12 @@ export interface SceneNode {
   ambient?: AmbientTrack;
 }
 
+/** 엔딩 메타데이터 (UI 표시용) */
+export interface EndingMeta {
+  /** 엔딩 라벨 (예: 'ENDING A — 괜찮은 직장') */
+  label: string;
+}
+
 /** 챕터 데이터 */
 export interface ChapterData {
   /** 챕터 ID */
@@ -98,6 +108,10 @@ export interface ChapterData {
   title: string;
   /** 시작 노드 ID */
   startNode: string;
+  /** 잔여감정 0 도달 시 강제 이동할 노드 ID (없으면 무시) */
+  gameOverNode?: string;
+  /** 엔딩 ID → 메타데이터 (UI 라벨 등) */
+  endings?: Record<string, EndingMeta>;
   /** 모든 노드 */
   nodes: SceneNode[];
 }
@@ -110,6 +124,20 @@ export interface GlobalState {
   playthroughCount: number;
   /** 도달한 엔딩 ID 목록 */
   endingsReached: string[];
+  /** 챕터별 읽은 노드 ID — 스킵 모드 가드용 */
+  readNodes?: Record<string, string[]>;
+}
+
+/** 세이브 슬롯 미리보기 메타 (UI 표시용) */
+export interface SavePreview {
+  /** 챕터 제목 (예: '첫 출근') */
+  chapterTitle: string;
+  /** 노드 텍스트 일부 (1줄) */
+  snippet: string;
+  /** 배경 이미지 경로 (있는 경우) */
+  bgImage?: string;
+  /** 화자 (있는 경우) */
+  speaker?: string;
 }
 
 /** 세이브 상태 (현재 진행) */
@@ -130,6 +158,18 @@ export interface SaveState {
   backlog: BacklogEntry[];
   /** 저장 시각 */
   savedAt: string;
+  /** 슬롯 UI 표시용 미리보기 */
+  preview?: SavePreview;
+}
+
+/** 세이브 슬롯 ID — 자동저장 + 수동 1~9 */
+export type SaveSlotId = 'auto' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+export const SAVE_SLOT_IDS: SaveSlotId[] = ['auto', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+/** 세이브 슬롯 (UI 표시용 — 비어있을 수도 있음) */
+export interface SaveSlot {
+  id: SaveSlotId;
+  state: SaveState | null;
 }
 
 /** 백로그 항목 */
@@ -140,4 +180,18 @@ export interface BacklogEntry {
   speaker?: string;
   /** 표시된 텍스트 (오버라이드 적용 후) */
   text: string;
+}
+
+/** 사용자 설정 (옵션 메뉴) */
+export interface SettingsState {
+  /** 스키마 버전 */
+  version: number;
+  /** 텍스트 출력 속도 (ms per char). 0 = 즉시 표시 */
+  textSpeedMs: number;
+  /** BGM 볼륨 (0.0 ~ 1.0) */
+  bgmVolume: number;
+  /** 효과음 볼륨 (0.0 ~ 1.0) */
+  sfxVolume: number;
+  /** 자동 진행 시 텍스트 완료 후 대기 시간 (ms) */
+  autoSpeedMs: number;
 }

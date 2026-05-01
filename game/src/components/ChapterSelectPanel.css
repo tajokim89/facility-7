@@ -1,0 +1,110 @@
+.chapter-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.chapter-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  padding: 2rem 2.5rem;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.chapter-panel h2 {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--text-speaker);
+  text-align: center;
+}
+
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.chapter-card {
+  background: var(--bg-color);
+  border: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: all 0.2s;
+}
+
+.chapter-card:hover:not(:disabled) {
+  border-color: var(--text-speaker);
+  background: rgba(51, 68, 85, 0.1);
+}
+
+.chapter-card.chapter-locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+.chapter-num {
+  font-family: monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--text-speaker);
+  min-width: 60px;
+}
+
+.chapter-title {
+  flex: 1;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.chapter-endings-count {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.chapter-lock-msg {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+}
+
+.chapter-close {
+  display: block;
+  margin: 0 auto;
+  padding: 0.6rem 2.5rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  transition: all 0.2s;
+}
+
+.chapter-close:hover {
+  border-color: var(--text-speaker);
+  color: var(--text-speaker);
+}

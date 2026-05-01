@@ -1,0 +1,11 @@
+[
+  {
+    "id": "STYLE_REFERENCE",
+    "scene_type": "special",
+    "prompt": "A cinematic still from a clinical horror film. Sterile white institutional corridor with cold fluorescent overhead lighting. (Desaturated teal and grey color palette:1.5). (Perfectly straight architectural lines:1.3), symmetrical one-point perspective receding into the distance. Hard reflective surfaces: polished floors, metallic walls, frosted glass panels. (Extreme micro-contrast and texture detail:1.4) on every surface. (Shot on Arri Alexa Mini LF, Zeiss Supreme Prime 35mm lens, T1.5:1.3). Clinical horror aesthetic. (Cold, oppressive, and silent atmosphere:1.4). No people. 8k uhd, masterpiece, photorealistic.",
+    "negative_prompt": "warm colors, sunlight, nature, people, cartoon, anime, 3d render, watermark, text, blurry, soft, low contrast, cheerful, cozy, (nsfw:1.8), nude, naked, nudity, sexual, suggestive, erotic, pornographic",
+    "style_weight": 0.0,
+    "composition_weight": 0.0,
+    "priority": 0
+  }
+]

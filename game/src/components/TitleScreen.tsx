@@ -5,13 +5,26 @@ interface Props {
   hasSave: boolean;
   onNewGame: () => void;
   onContinue: () => void;
+  onLoad: () => void;
+  onChapterSelect: () => void;
+  onEndingGallery: () => void;
+  onSettings: () => void;
 }
 
-export default function TitleScreen({ playthroughCount, hasSave, onNewGame, onContinue }: Props) {
+export default function TitleScreen({
+  playthroughCount, hasSave,
+  onNewGame, onContinue, onLoad, onChapterSelect, onEndingGallery, onSettings,
+}: Props) {
   const isReplay = playthroughCount > 0;
+  const bgImage = isReplay
+    ? '/images/chapter1/TITLE_GLITCH.png'
+    : '/images/chapter1/TITLE_NORMAL.png';
 
   return (
-    <div className="title-screen">
+    <div
+      className="title-screen"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
       <div className="title-inner">
         <div className="title-content">
           <h1 className="title-main">
@@ -37,6 +50,20 @@ export default function TitleScreen({ playthroughCount, hasSave, onNewGame, onCo
               Continue
             </button>
           )}
+          <button className="title-button" onClick={onLoad}>
+            Load
+          </button>
+          <button className="title-button" onClick={onChapterSelect}>
+            Chapter Select
+          </button>
+          {isReplay && (
+            <button className="title-button" onClick={onEndingGallery}>
+              Endings
+            </button>
+          )}
+          <button className="title-button" onClick={onSettings}>
+            Settings
+          </button>
         </div>
       </div>
 

@@ -5,8 +5,26 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--bg-color);
+  background-color: var(--bg-color);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
+}
+
+.title-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+
+.title-inner,
+.title-playthrough,
+.title-warning {
+  position: relative;
+  z-index: 1;
 }
 
 .title-inner {

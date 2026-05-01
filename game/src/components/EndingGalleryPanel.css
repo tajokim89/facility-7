@@ -1,0 +1,124 @@
+.gallery-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.gallery-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  padding: 2rem 2.5rem;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.gallery-panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--text-speaker);
+  text-align: center;
+}
+
+.gallery-summary {
+  text-align: center;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 2rem;
+}
+
+.gallery-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.gallery-group {
+  border-left: 2px solid var(--border);
+  padding-left: 1rem;
+}
+
+.gallery-group.gallery-locked {
+  opacity: 0.4;
+}
+
+.gallery-group-title {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--text-speaker);
+  margin-bottom: 0.6rem;
+}
+
+.gallery-endings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.gallery-ending {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--bg-color);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+.gallery-ending-marker {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.gallery-ending-reached .gallery-ending-marker {
+  color: var(--emotion-full);
+}
+
+.gallery-ending-label {
+  letter-spacing: 0.04em;
+}
+
+.gallery-ending:not(.gallery-ending-reached) .gallery-ending-label {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.gallery-locked-msg {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+  padding: 0.5rem 0;
+}
+
+.gallery-close {
+  display: block;
+  margin: 0 auto;
+  padding: 0.6rem 2.5rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  transition: all 0.2s;
+}
+
+.gallery-close:hover {
+  border-color: var(--text-speaker);
+  color: var(--text-speaker);
+}

@@ -37,6 +37,10 @@ from comfyui.lib.manifest import (
     record_generation, accept_variant, reject_all, get_pending, get_status,
 )
 from comfyui.lib.quality import validate_image, print_report
+from comfyui.lib.gemini_validator import (
+    validate_image as gemini_validate,
+    print_validation_result,
+)
 
 
 # -- 공통 유틸 ----------------------------------------------------------------
