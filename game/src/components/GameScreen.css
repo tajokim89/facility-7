@@ -18,7 +18,7 @@
   background: linear-gradient(180deg, var(--bg-color) 0%, #0d0808 100%);
 }
 
-/* 씬 배경 이미지: 비율 유지하며 전체 표시 */
+/* 씬 배경 이미지: 비율 유지하며 전체 표시. prev/current 두 레이어 크로스페이드. */
 .scene-bg {
   position: absolute;
   inset: 0;
@@ -27,6 +27,24 @@
   object-fit: contain;
   object-position: center;
   z-index: 0;
+}
+
+.scene-bg-current {
+  animation: bg-fade-in 0.6s ease-out;
+}
+
+.scene-bg-fading {
+  animation: bg-fade-out 0.6s ease-out forwards;
+}
+
+@keyframes bg-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bg-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 /* 텍스트 가독성 오버레이 — 상단은 거의 투명, 하단만 살짝 어둡게 (대사창 위) */

@@ -207,6 +207,27 @@ export class GameEngine {
     return override?.sound ?? node.sound;
   }
 
+  /**
+   * 현재 노드에서 도달 가능한 다음 노드들의 bgImage 목록 (프리로드용).
+   * choices의 next + 단순 next를 모두 포함.
+   */
+  getNextBgImages(): string[] {
+    if (!this.currentNode) return [];
+    const candidateIds: string[] = [];
+    if (this.currentNode.next) candidateIds.push(this.currentNode.next);
+    if (this.currentNode.choices) {
+      this.currentNode.choices.forEach(c => candidateIds.push(c.next));
+    }
+    const result: string[] = [];
+    for (const id of candidateIds) {
+      const node = this.nodeMap.get(id);
+      if (!node) continue;
+      const bg = this.resolveBgImage(node);
+      if (bg) result.push(bg);
+    }
+    return result;
+  }
+
   /** 활성 오버라이드 찾기 */
   private findActiveOverride(node: SceneNode): PlaythroughOverride | undefined {
     if (!node.overrides) return undefined;

@@ -208,9 +208,25 @@ A close-up cinematic shot of a minimalist futuristic PA speaker mounted on a ste
 
 ---
 
-## S21 — B구역 입구
+## S21 — 한서진, B구역 안내
 
-**컨텍스트**: 정밀 추출실. A구역보다 더 정교하고 아름다움.
+**컨텍스트**: 오후. 한서진이 "B구역 견학이에요. 정밀 추출실. 더 섬세하고... 더 아름다워요." 라고 권한다. 화자 컷 — 한서진이 화면에 보여야 함.
+**필수**: REF_HAN_SE_JIN 첨부.
+
+```
+A medium close-up cinematic shot of Han Se-jin (the previously described Korean woman in her late twenties, fully clothed in a long-sleeve white clinical uniform) standing in a sterile white corridor just outside the entrance to Sector B. She faces the camera with a polite, very faintly inviting expression — eyes a touch softer than usual, lips closed in a small professional smile, as if recommending something she personally finds beautiful. One hand subtly gestures behind her toward an unseen doorway. Through a tall narrow opening over her shoulder, a glimpse of intricate transparent glass machinery and delicate glowing tubes can be seen, washed in soft ethereal blue and silver light. The corridor itself remains cold sterile white, but the cool blue-silver glow from Sector B subtly tints the air around her on one side. Symmetrical composition, perfectly straight architectural lines behind her, high-key clinical lighting, 8k photorealistic. Avoid: any wall directly behind her, any curved or distorted lines, warm sunlight, any other person in frame.
+```
+
+**2회차 변형** (선택):
+```
+Same composition and same character, but her professional smile has frozen a fraction of a second too long, and her eyes are slightly out of focus, as if her recommendation is being recited rather than meant. The blue-silver glow from Sector B is faintly more saturated, almost too vivid for a pleasant scene.
+```
+
+---
+
+## S21_env — B구역 입구 (보조컷, 미사용)
+
+**컨텍스트**: 화자 한서진의 다음 노드(S22) 진입 직전 환경 컷이 필요할 때만 사용. 기본 흐름에서는 S22의 매크로 컷이 B구역 분위기를 충분히 전달하므로 생략 가능.
 
 ```
 A wide cinematic shot of the entrance to Sector B, marked "PRECISION EXTRACTION" on a thin clinical wall plate. The room beyond is filled with intricate transparent glass machinery and delicate glowing tubes arranged in vertical lattices — closer to a high-end scientific instrument than a medical room. Soft ethereal blue and silver lighting bathes the space, more pristine and more high-tech than Sector A. Empty of people. Symmetrical perspective, 8k photorealistic. Avoid: any human figure, any warm color.

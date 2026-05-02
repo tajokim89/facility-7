@@ -284,6 +284,7 @@ const chapter1: ChapterData = {
     },
     {
       id: 'S20',
+      bgImage: '/images/chapter1/S20.png',
       text: '시설 내 방송이 울린다.\n\n「금일 D구역 정기 점검으로 인해 오후 3시부터 통행이 제한됩니다.」',
       next: 'S21',
       overrides: [{
@@ -302,6 +303,10 @@ const chapter1: ChapterData = {
       next: 'S22',
       sound: 'doorOpen',
       ambient: 'sector_b',
+      overrides: [{
+        minPlaythrough: 2,
+        bgImage: '/images/chapter1/S21_2nd.png',
+      }],
     },
     {
       id: 'S22',
@@ -456,6 +461,7 @@ const chapter1: ChapterData = {
     // === 엔딩 A: 괜찮은 직장 ===
     {
       id: 'ending_normal',
+      bgImage: '/images/chapter1/ENDING_A.png',
       text: '첫날치고 나쁘지 않았다.\n\n이상한 곳이긴 하지만, 일은 단순하고 급여는 괜찮다.\n\n내일도 출근이다.',
       endingId: 'ending_a',
       ambient: 'ending_normal',
@@ -464,12 +470,14 @@ const chapter1: ChapterData = {
         minPlaythrough: 2,
         appendText: '\n\n...태블릿 화면에 잔여 감정 수치가 깜빡이고 있었지만, 나는 보지 못했다.',
         effect: 'fade',
+        bgImage: '/images/chapter1/ENDING_A_2nd.png',
       }],
     },
 
     // === 엔딩 B: 무언가 이상한 ===
     {
       id: 'ending_uneasy',
+      bgImage: '/images/chapter1/ENDING_B.png',
       text: '집으로 돌아가는 길.\n\n막연한 불안감이 가시지 않았다.\n오늘 뭔가 이상했다. 하지만 뭐가 이상한지 모르겠다.\n\n......태블릿의 잔여 감정 수치가, 아침보다 줄어 있었다.',
       endingId: 'ending_b',
       ambient: 'ending_b',
@@ -478,12 +486,14 @@ const chapter1: ChapterData = {
         minPlaythrough: 2,
         appendText: '\n\n이상한 건 시설이 아니었다.\n이상한 건... 내가 변하고 있다는 것이었다.',
         effect: 'colorShift',
+        bgImage: '/images/chapter1/ENDING_B_2nd.png',
       }],
     },
 
     // === 엔딩 C: 거울 ===
     {
       id: 'ending_mirror',
+      bgImage: '/images/chapter1/ENDING_C.png',
       text: '엘리베이터 안. 문이 닫히기 직전, 거울에 비친 자신의 얼굴이 보였다.\n\n......낯설었다.\n\n나는... 언제부터 이런 표정을 하고 있었지?',
       endingId: 'ending_c',
       ambient: 'ending_mirror',
@@ -493,12 +503,14 @@ const chapter1: ChapterData = {
         minPlaythrough: 2,
         appendText: '\n\n거울에 비친 얼굴 위로, 글자가 겹쳐 보였다.\n\n「대상자 #042」',
         effect: 'glitch',
+        bgImage: '/images/chapter1/ENDING_C_2nd.png',
       }],
     },
 
     // === 엔딩 D: 공허 (게이지 0) ===
     {
       id: 'ending_empty',
+      bgImage: '/images/chapter1/ENDING_D.png',
       text: '......\n\n아무것도 느껴지지 않는다.\n\n태블릿에 알림이 떴다.\n「관찰자 자격 재심사 대상으로 분류되었습니다.」\n\n태블릿이 꺼졌다.',
       endingId: 'ending_d',
       ambient: 'ending_d',
@@ -508,6 +520,7 @@ const chapter1: ChapterData = {
         minPlaythrough: 2,
         text: '......\n\n아무것도 느껴지지 않는다.\n\n태블릿에 알림이 떴다.\n「대상자 전환 절차 개시.」\n「의자로 이동하십시오.」\n\n태블릿이 꺼졌다.',
         effect: 'glitch',
+        bgImage: '/images/chapter1/ENDING_D_2nd.png',
       }],
     },
   ],

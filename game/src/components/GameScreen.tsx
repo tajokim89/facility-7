@@ -28,7 +28,8 @@ export default function GameScreen() {
   const [effectKey, setEffectKey] = useState(0);
   const [endingText, setEndingText] = useState('');
   const [endingId, setEndingId] = useState('');
-  const [displayBgImage, setDisplayBgImage] = useState<string | undefined>(undefined);
+  // 배경 이미지 크로스페이드용. prev는 페이드 아웃 중인 직전 이미지, current는 현재 표시.
+  const [bg, setBg] = useState<{ prev?: string; current?: string }>({});
   const [settings, setSettings] = useState<SettingsState>(() => engine.loadSettings());
   const [showSettings, setShowSettings] = useState(false);
   const [skipHeld, setSkipHeld] = useState(false);   // Ctrl 누르고 있는 동안
@@ -48,10 +49,10 @@ export default function GameScreen() {
       setEmotion(engine.getRemainingEmotion());
       setEffectKey(k => k + 1);
 
-      // 노드에 bgImage가 있으면 갱신, 없으면 직전 이미지 유지 (장면 간 fade 자연스러움)
+      // 노드에 bgImage가 있으면 갱신(크로스페이드), 없으면 직전 이미지 유지
       const bgImage = engine.resolveBgImage(node);
       if (bgImage !== undefined) {
-        setDisplayBgImage(bgImage);
+        setBg(curr => curr.current === bgImage ? curr : { prev: curr.current, current: bgImage });
       }
 
       // 빈 텍스트 노드(분기 체크용)는 자동 처리 — 루프로 처리해 재귀 제거
@@ -221,6 +222,16 @@ export default function GameScreen() {
     audioManager.setSfxVolume(settings.sfxVolume);
   }, [settings.bgmVolume, settings.sfxVolume]);
 
+  // 다음 노드 후보들의 bgImage를 미리 fetch (브라우저 캐시에 적재)
+  useEffect(() => {
+    if (!currentNode) return;
+    const nextBgs = engine.getNextBgImages();
+    nextBgs.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [currentNode, engine]);
+
   // 스킵 모드 자동 advance — 읽은 노드만 빠르게 진행, 못 본 노드 도달 시 정지
   const skipActive = skipMode && !!currentNode && !showChoices && !currentNode?.endingId;
   useEffect(() => {
@@ -371,12 +382,26 @@ export default function GameScreen() {
 
   return (
     <div className={`game-screen ${currentNode.bgClass ?? ''}`}>
-      {displayBgImage && (
-        <>
-          <img src={displayBgImage} alt="" className="scene-bg" />
-          <div className="scene-bg-overlay" />
-        </>
+      {bg.prev && (
+        <img
+          key={`prev-${bg.prev}`}
+          src={bg.prev}
+          alt=""
+          className="scene-bg scene-bg-fading"
+          onAnimationEnd={() => setBg(curr => ({ ...curr, prev: undefined }))}
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+        />
       )}
+      {bg.current && (
+        <img
+          key={`cur-${bg.current}`}
+          src={bg.current}
+          alt=""
+          className="scene-bg scene-bg-current"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+        />
+      )}
+      {(bg.current || bg.prev) && <div className="scene-bg-overlay" />}
       <EffectLayer effect={resolvedEffect} key={effectKey}>
         <div
           className="game-viewport"
